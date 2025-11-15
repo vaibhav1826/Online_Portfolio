@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import SectionTitle from '../UI/SectionTitle'
 import AnimatedCard from '../UI/AnimatedCard'
+import image1 from '../../../public/Screenshot_1.png'
 import { projectShowcase } from '../../utils/chartData'
 
 type ProjectsShowcaseProps = {
@@ -33,7 +34,7 @@ const ProjectsShowcase = ({ id }: ProjectsShowcaseProps) => {
                 alt={project.name}
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 onError={(e) => {
-                  e.currentTarget.src = 'https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=600'
+                  e.currentTarget.src = image1
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent" />
