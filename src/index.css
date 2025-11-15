@@ -5,11 +5,11 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
-  @apply bg-mint text-charcoal font-body antialiased;
+  @apply bg-slate-950 text-white font-body antialiased;
 }
 
 #root {
@@ -17,18 +17,16 @@ body {
 }
 
 .glass-panel {
-  @apply bg-white/30 backdrop-blur-md border border-white/20 rounded-3xl shadow-bloom;
+  @apply glass-effect rounded-3xl shadow-glow;
 }
 
-.react-github-calendar__chart {
-  @apply mx-auto;
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
-.react-github-calendar__block {
-  @apply transition duration-300 ease-in-out;
-}
-
-.react-github-calendar__block:hover {
-  @apply scale-110 origin-center;
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
 }
 

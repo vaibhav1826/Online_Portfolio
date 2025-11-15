@@ -1,12 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import {
-  DEFAULT_GITHUB_USERNAME,
-  fetchGitHubProfile,
-  fetchUserRepos,
-  aggregateLanguages,
-  type RepoLanguages,
-} from '../../utils/githubAPI'
 import { resumeSections, projectShowcase } from '../../utils/chartData'
 
 type AssistantWidgetProps = {
@@ -15,14 +8,13 @@ type AssistantWidgetProps = {
 }
 
 type Message = { role: 'assistant' | 'user'; content: string }
-type GHProfileLite = { name?: string; followers?: number; public_repos?: number; html_url?: string }
 
 const SUGGESTIONS = [
-  'How do I enable GitHub analytics?',
-  'How do I configure EmailJS?',
-  'How can I export my résumé to PDF?',
-  'How is the GitHub heatmap generated?',
-  'How do I deploy this?',
+  'Tell me about skills',
+  'What projects have been built?',
+  'How to contact?',
+  'Show education',
+  'List certificates',
 ]
 
 const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
@@ -30,68 +22,11 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
     {
       role: 'assistant',
       content:
-        "Hi, I’m Vaibhav’s assistant. Ask about his skills, projects, contact, education, certificates, achievements, or GitHub activity. 🌿",
+        "Hi! I'm Vaibhav's assistant. Ask me about skills, projects, education, certificates, or achievements.",
     },
   ])
   const [input, setInput] = useState('')
   const endRef = useRef<HTMLDivElement | null>(null)
-
-  // Live data pulled strictly from Vaibhav's public sources and local resume
-  const [profile, setProfile] = useState<GHProfileLite | null>(null)
-  const [topLanguages, setTopLanguages] = useState<Array<{ name: string; percent: number }>>([])
-  const [topRepos, setTopRepos] = useState<Array<{ name: string; stars: number; url: string }>>([])
-  const [leetcode, setLeetcode] = useState<{ total?: number; easy?: number; med?: number; hard?: number } | null>(null)
-
-  useEffect(() => {
-    let mounted = true
-    const load = async () => {
-      try {
-        const gh = await fetchGitHubProfile(DEFAULT_GITHUB_USERNAME)
-        if (!mounted) return
-        setProfile(gh ? { name: gh.name, followers: gh.followers, public_repos: gh.public_repos, html_url: gh.html_url } : null)
-
-        const repos = await fetchUserRepos(DEFAULT_GITHUB_USERNAME, { perPage: 50 })
-        if (!mounted) return
-        setTopRepos(
-          repos
-            .slice(0, 8)
-            .map((r) => ({ name: r.name, stars: r.stargazers_count ?? 0, url: `https://github.com/${r.full_name}` }))
-            .slice(0, 5),
-        )
-
-        const langs: RepoLanguages = await aggregateLanguages(repos)
-        if (!mounted) return
-        const total = Object.values(langs).reduce((a, b) => a + b, 0) || 1
-        const top = Object.entries(langs)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 6)
-          .map(([name, bytes]) => ({ name, percent: Math.round((bytes / total) * 100) }))
-        setTopLanguages(top)
-
-        // LeetCode quick stats
-        try {
-          const { fetchLeetCodeStats } = await import('../../utils/leetcodeAPI')
-          const lc = await fetchLeetCodeStats('vaibhav1826')
-          if (mounted && lc) {
-            setLeetcode({
-              total: lc.totalSolved,
-              easy: lc.easySolved,
-              med: lc.mediumSolved,
-              hard: lc.hardSolved,
-            })
-          }
-        } catch {
-          // ignore
-        }
-      } catch {
-        // Ignore errors; assistant will answer with available resume data
-      }
-    }
-    void load()
-    return () => {
-      mounted = false
-    }
-  }, [])
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -112,81 +47,45 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
   const getAnswer = (q: string) => {
     const s = q.toLowerCase()
 
-    // Contact
-    if (/(contact|email|linkedin|github|phone|mobile)/i.test(s)) {
+    if (/(contact|email|linkedin|github|phone)/i.test(s)) {
       return [
-        'Contact details:',
+        'Contact Information:',
         '- Email: vaibhavbhatt145@gmail.com',
         '- LinkedIn: linkedin.com/in/vaibhav-bhatt-382971283/',
         '- GitHub: github.com/vaibhav1826',
-        '- Mobile: +91 9058065003',
+        '- Phone: +91 9058065003',
       ].join('\n')
     }
 
-    // Summary / About
-    if (/(who|about|summary|bio|profile)/i.test(s)) {
-      const name = profile?.name ?? 'Vaibhav Bhatt'
-      const followers = profile?.followers != null ? ` · ${profile.followers} followers` : ''
-      const reposCount = profile?.public_repos != null ? ` · ${profile.public_repos} public repos` : ''
-      return `${name} is a developer focused on modern web development and clean UI/UX. GitHub: github.com/vaibhav1826${followers}${reposCount}. Ask about skills, projects, education, or certificates.`
+    if (/(skills?|tech|languages?)/i.test(s)) {
+      const skillsSection = resumeSections.find((x) => x.title.toLowerCase().includes('skills'))
+      if (!skillsSection) return 'Skills information is not available.'
+      return skillsSection.items.map((i) => `${i.title}: ${i.subtitle}`).join('\n')
     }
 
-    // Skills / Languages
-    if (/(skills?|tech|stack|languages?)/i.test(s)) {
-      const resumeSkills = resumeSections.find((x) => x.title.toLowerCase().includes('skills'))
-      const lines = []
-      if (topLanguages.length) {
-        lines.push(
-          'Top languages on GitHub: ' +
-            topLanguages.map((l) => `${l.name} ${l.percent}%`).join(', '),
-        )
-      }
-      if (resumeSkills) {
-        resumeSkills.items.forEach((i) => {
-          if (i.subtitle) lines.push(`${i.title}: ${i.subtitle}`)
-        })
-      }
-      return lines.length ? lines.join('\n') : 'Skills information is currently unavailable.'
+    if (/(projects?|work)/i.test(s)) {
+      return projectShowcase.map((p) => `${p.name}: ${p.description}`).join('\n\n')
     }
 
-    // Projects
-    if (/(projects?|work|portfolio|repos?)/i.test(s)) {
-      const featured = projectShowcase.map((p) => `- ${p.name}: ${p.description}`).join('\n')
-      const repoList = topRepos.length
-        ? '\nTop repositories:\n' + topRepos.map((r) => `- ${r.name} (★${r.stars}) — ${r.url}`).join('\n')
-        : ''
-      return `Highlighted projects:\n${featured}${repoList}`
-    }
-
-    // LeetCode
-    if (/(leetcode|problems|dsa|practice)/i.test(s)) {
-      if (!leetcode) return 'LeetCode stats are currently unavailable.'
-      return `LeetCode: Solved ${leetcode.total ?? '—'} (E:${leetcode.easy ?? '—'} · M:${leetcode.med ?? '—'} · H:${leetcode.hard ?? '—'}) — Profile: https://leetcode.com/u/vaibhav1826/`
-    }
-
-    // Education
-    if (/(education|college|university|school)/i.test(s)) {
+    if (/(education|university|school)/i.test(s)) {
       const ed = resumeSections.find((x) => x.title.toLowerCase().includes('education'))
-      if (!ed) return 'Education details are not available.'
-      return ed.items.map((i) => `- ${i.title}: ${i.subtitle}${i.period ? ` (${i.period})` : ''}`).join('\n')
+      if (!ed) return 'Education details not available.'
+      return ed.items.map((i) => `${i.title}\n${i.subtitle}${i.period ? ` (${i.period})` : ''}`).join('\n\n')
     }
 
-    // Certificates
-    if (/(certificates?|courses?|nptel|internshala)/i.test(s)) {
+    if (/(certificates?|courses?)/i.test(s)) {
       const cert = resumeSections.find((x) => x.title.toLowerCase().includes('certificates'))
-      if (!cert) return 'Certificates are not available.'
-      return cert.items.map((i) => `- ${i.title}${i.period ? ` (${i.period})` : ''}`).join('\n')
+      if (!cert) return 'Certificates not available.'
+      return cert.items.map((i) => `${i.title}${i.period ? ` (${i.period})` : ''}`).join('\n')
     }
 
-    // Achievements
-    if (/(achievements?|awards?|hackathon)/i.test(s)) {
+    if (/(achievements?|awards?)/i.test(s)) {
       const ach = resumeSections.find((x) => x.title.toLowerCase().includes('achievements'))
-      if (!ach) return 'Achievements are not available.'
-      return ach.items.map((i) => `- ${i.title}${i.period ? ` (${i.period})` : ''}`).join('\n')
+      if (!ach) return 'Achievements not available.'
+      return ach.items.map((i) => `${i.title}${i.period ? ` (${i.period})` : ''}`).join('\n')
     }
 
-    // Default help
-    return "Ask about: skills, projects, contact, education, certificates, achievements, or GitHub languages/commits."
+    return "I can help with: skills, projects, education, certificates, achievements, and contact information."
   }
 
   const container = useMemo(
@@ -200,7 +99,7 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
             exit={{ opacity: 0 }}
           >
             <div
-              className="absolute inset-0 bg-black/20"
+              className="absolute inset-0 bg-black/60"
               onClick={onClose}
               aria-hidden="true"
             />
@@ -214,9 +113,9 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
               transition={{ duration: 0.25, ease: 'easeOut' }}
             >
               <div className="mb-3 flex items-center justify-between">
-                <h3 className="font-display text-xl">Assistant</h3>
+                <h3 className="font-display text-xl text-white">Assistant</h3>
                 <button
-                  className="rounded-full bg-white/60 px-3 py-1 text-sm text-charcoal/80 hover:bg-white"
+                  className="rounded-full bg-white/10 px-3 py-1 text-sm text-gray-300 hover:bg-white/20 transition"
                   onClick={onClose}
                 >
                   Close
@@ -227,7 +126,7 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
                 {SUGGESTIONS.map((s) => (
                   <button
                     key={s}
-                    className="rounded-full bg-white/60 px-3 py-1 text-xs text-charcoal/80 hover:bg-white"
+                    className="rounded-full bg-white/5 px-3 py-1 text-xs text-gray-300 border border-white/10 hover:bg-white/10 transition"
                     onClick={() => handleAsk(s)}
                   >
                     {s}
@@ -235,12 +134,12 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
                 ))}
               </div>
 
-              <div className="max-h-72 overflow-y-auto rounded-2xl border border-white/30 bg-white/50 p-3">
+              <div className="max-h-72 overflow-y-auto rounded-2xl border border-white/10 bg-white/5 p-3">
                 {messages.map((m, i) => (
                   <div
                     key={i}
                     className={`mb-2 whitespace-pre-wrap text-sm ${
-                      m.role === 'assistant' ? 'text-charcoal/90' : 'text-charcoal'
+                      m.role === 'assistant' ? 'text-gray-300' : 'text-white'
                     }`}
                   >
                     {m.role === 'user' ? 'You: ' : 'Assistant: '}
@@ -260,12 +159,12 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about setup, analytics, or deployment…"
-                  className="flex-1 rounded-2xl border border-white/40 bg-white/70 px-3 py-2 text-sm outline-none focus:border-sage focus:ring-2 focus:ring-sage/30"
+                  placeholder="Ask about skills, projects, or experience..."
+                  className="flex-1 rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-500 outline-none focus:border-navy-500 focus:ring-2 focus:ring-navy-500/40"
                 />
                 <button
                   type="submit"
-                  className="rounded-2xl bg-sage px-4 py-2 text-sm font-medium text-charcoal hover:bg-softgreen"
+                  className="rounded-2xl bg-navy-600 px-4 py-2 text-sm font-medium text-white hover:bg-navy-500 transition"
                 >
                   Send
                 </button>
@@ -282,4 +181,3 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
 }
 
 export default AssistantWidget
-

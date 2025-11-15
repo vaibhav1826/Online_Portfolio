@@ -36,6 +36,7 @@ export const projectShowcase = [
     metric: 'Correlated weather and yield; responsive, farmer-friendly UI',
     github: 'https://github.com/vaibhav1826?tab=repositories',
     demo: '#',
+    image: 'https://images.pexels.com/photos/2132250/pexels-photo-2132250.jpeg?auto=compress&cs=tinysrgb&w=600',
   },
   {
     name: 'Virtu Swift',
@@ -45,6 +46,7 @@ export const projectShowcase = [
     metric: 'Streamlined media handling with interactive insights',
     github: 'https://github.com/vaibhav1826?tab=repositories',
     demo: '#',
+    image: 'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=600',
   },
   {
     name: 'Smart Payroll & Employee Management',
@@ -54,6 +56,7 @@ export const projectShowcase = [
     metric: 'Automated salary pipelines and clear admin dashboards',
     github: 'https://github.com/vaibhav1826?tab=repositories',
     demo: '#',
+    image: 'https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=600',
   },
 ]
 

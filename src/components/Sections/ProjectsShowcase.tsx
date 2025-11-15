@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 import SectionTitle from '../UI/SectionTitle'
 import AnimatedCard from '../UI/AnimatedCard'
 import { projectShowcase } from '../../utils/chartData'
@@ -8,59 +9,98 @@ type ProjectsShowcaseProps = {
 }
 
 const ProjectsShowcase = ({ id }: ProjectsShowcaseProps) => {
+  const [selectedProject, setSelectedProject] = useState<number | null>(null)
+
   return (
     <section id={id} className="flex flex-col gap-10">
       <SectionTitle
-        eyebrow="project bloom"
-        title="Selected works that made an impact"
-        subtitle="Each project is a living organism—supported by thoughtful design, sustainable code, and measurable outcomes."
+        eyebrow="featured work"
+        title="Projects & Applications"
+        subtitle="A collection of web applications showcasing full-stack development expertise, from concept to deployment."
       />
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {projectShowcase.map((project, index) => (
-          <AnimatedCard key={project.name} delay={index * 0.05} className="space-y-6">
-            <div className="flex items-center justify-between gap-4">
-              <h3 className="font-display text-2xl">{project.name}</h3>
-              <motion.span
-                role="img"
-                aria-label="leaf bloom"
-                animate={{ rotate: [0, -10, 10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                🌱
-              </motion.span>
+          <AnimatedCard
+            key={project.name}
+            delay={index * 0.1}
+            className="group relative overflow-hidden space-y-4 cursor-pointer"
+            onClick={() => setSelectedProject(selectedProject === index ? null : index)}
+          >
+            <div className="relative h-48 w-full overflow-hidden rounded-xl bg-gradient-to-br from-navy-800 to-navy-900">
+              <img
+                src={project.image}
+                alt={project.name}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=600'
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent" />
             </div>
-            <p className="text-sm text-charcoal/70">{project.description}</p>
-            <ul className="flex flex-wrap gap-2 text-sm text-charcoal/70">
-              {project.stack.map((tech) => (
-                <li
-                  key={tech}
-                  className="rounded-full bg-white/40 px-4 py-1 text-xs uppercase tracking-[0.25em]"
+
+            <div className="space-y-3">
+              <h3 className="font-display text-xl text-white">{project.name}</h3>
+              <p className="text-sm text-gray-400 line-clamp-3">{project.description}</p>
+
+              <div className="flex flex-wrap gap-2">
+                {project.stack.slice(0, 3).map((tech) => (
+                  <span
+                    key={tech}
+                    className="rounded-full bg-navy-900/50 px-3 py-1 text-xs text-navy-300 border border-navy-700"
+                  >
+                    {tech}
+                  </span>
+                ))}
+                {project.stack.length > 3 && (
+                  <span className="rounded-full bg-navy-900/50 px-3 py-1 text-xs text-navy-300 border border-navy-700">
+                    +{project.stack.length - 3}
+                  </span>
+                )}
+              </div>
+
+              <motion.div
+                initial={false}
+                animate={{ height: selectedProject === index ? 'auto' : 0 }}
+                className="overflow-hidden"
+              >
+                <div className="space-y-3 pt-3 border-t border-white/10">
+                  <div className="flex flex-wrap gap-2">
+                    {project.stack.map((tech) => (
+                      <span
+                        key={tech}
+                        className="rounded-full bg-navy-900/50 px-3 py-1 text-xs text-navy-300 border border-navy-700"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-sm text-navy-400">
+                    <span className="font-semibold text-white">Impact:</span> {project.metric}
+                  </p>
+                </div>
+              </motion.div>
+
+              <div className="flex gap-3 pt-2">
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex-1 rounded-lg bg-navy-600 px-4 py-2 text-center text-sm font-medium text-white transition hover:bg-navy-500"
                 >
-                  {tech}
-                </li>
-              ))}
-            </ul>
-            <p className="text-sm font-medium text-charcoal">
-              Impact: <span className="text-sage">{project.metric}</span>
-            </p>
-            <div className="flex flex-wrap gap-4 text-sm font-medium text-sage">
-              <a
-                className="underline decoration-dotted underline-offset-4 transition hover:text-charcoal"
-                href={project.demo}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Live demo →
-              </a>
-              <a
-                className="underline decoration-dotted underline-offset-4 transition hover:text-charcoal"
-                href={project.github}
-                target="_blank"
-                rel="noreferrer"
-              >
-                GitHub repo →
-              </a>
+                  View Demo
+                </a>
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex-1 rounded-lg border border-navy-600 px-4 py-2 text-center text-sm font-medium text-navy-400 transition hover:bg-navy-900"
+                >
+                  GitHub
+                </a>
+              </div>
             </div>
           </AnimatedCard>
         ))}
@@ -70,4 +110,3 @@ const ProjectsShowcase = ({ id }: ProjectsShowcaseProps) => {
 }
 
 export default ProjectsShowcase
-
