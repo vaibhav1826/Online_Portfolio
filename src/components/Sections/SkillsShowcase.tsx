@@ -1,7 +1,5 @@
 import { motion } from 'framer-motion'
 
-import '../../utils/chartConfig'
-
 type SkillsShowcaseProps = {
   id: string
 }
