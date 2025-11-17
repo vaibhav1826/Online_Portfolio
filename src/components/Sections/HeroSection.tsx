@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt, FaDownload } from 'react-icons/fa'
 import { useState, useRef } from 'react'
 
 type HeroSectionProps = {
@@ -46,12 +46,12 @@ const HeroSection = ({ id }: HeroSectionProps) => {
             key={i}
             className="absolute w-1 h-1 bg-blue-400/30 rounded-full"
             initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x: typeof window !== 'undefined' ? Math.random() * window.innerWidth : 0,
+              y: typeof window !== 'undefined' ? Math.random() * window.innerHeight : 0,
             }}
             animate={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x: typeof window !== 'undefined' ? Math.random() * window.innerWidth : 0,
+              y: typeof window !== 'undefined' ? Math.random() * window.innerHeight : 0,
               scale: [1, 1.5, 1],
               opacity: [0.3, 0.8, 0.3],
             }}
@@ -321,7 +321,7 @@ const HeroSection = ({ id }: HeroSectionProps) => {
                       ? 'bg-blue-600 hover:bg-blue-700' 
                       : 'bg-slate-800 hover:bg-slate-700'
                   } text-white px-6 py-3 rounded-lg transition-all duration-300 ${
-                    !link.bg ? `border border-slate-600 hover:border-${link.color}-500` : ''
+                    !link.bg ? 'border border-slate-600' : ''
                   }`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -329,7 +329,11 @@ const HeroSection = ({ id }: HeroSectionProps) => {
                   whileHover={{ 
                     scale: 1.05,
                     y: -5,
-                    boxShadow: `0 10px 30px rgba(${link.color === 'blue' ? '59, 130, 246' : link.color === 'cyan' ? '34, 211, 238' : '16, 185, 129'}, 0.4)`,
+                    boxShadow: link.color === 'blue' 
+                      ? '0 10px 30px rgba(59, 130, 246, 0.4)'
+                      : link.color === 'cyan'
+                      ? '0 10px 30px rgba(34, 211, 238, 0.4)'
+                      : '0 10px 30px rgba(16, 185, 129, 0.4)',
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -342,6 +346,30 @@ const HeroSection = ({ id }: HeroSectionProps) => {
                   <span>{link.label}</span>
                 </motion.a>
               ))}
+              
+              {/* Download Resume Button */}
+              <motion.a
+                href="/LpuResume.pdf"
+                download="Vaibhav_Bhatt_Resume.pdf"
+                className="flex items-center gap-2 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white px-6 py-3 rounded-lg transition-all duration-300 border border-teal-400/30"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.5 }}
+                whileHover={{ 
+                  scale: 1.05,
+                  y: -5,
+                  boxShadow: '0 10px 30px rgba(20, 184, 166, 0.4)',
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <motion.div
+                  whileHover={{ y: [0, -3, 0] }}
+                  transition={{ duration: 0.5, repeat: Infinity }}
+                >
+                  <FaDownload className="text-xl" />
+                </motion.div>
+                <span>Resume</span>
+              </motion.a>
             </motion.div>
           </motion.div>
         </div>
