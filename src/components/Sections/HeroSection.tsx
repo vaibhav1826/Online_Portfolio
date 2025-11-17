@@ -1,13 +1,12 @@
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 
 type HeroSectionProps = {
   id: string
 }
 
 const HeroSection = ({ id }: HeroSectionProps) => {
-  const [isVisible, setIsVisible] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const imageRef = useRef<HTMLDivElement>(null)
   
@@ -20,10 +19,6 @@ const HeroSection = ({ id }: HeroSectionProps) => {
   const springConfig = { stiffness: 150, damping: 20 }
   const rotateXSpring = useSpring(rotateX, springConfig)
   const rotateYSpring = useSpring(rotateY, springConfig)
-
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!imageRef.current) return
