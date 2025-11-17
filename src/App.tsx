@@ -14,8 +14,6 @@ import Footer from './components/Layout/Footer'
 import ScrollToTop from './components/UI/ScrollToTop'
 
 const SECTION_IDS = [
-  'hero',
-  'stats',
   'skills',
   'projects',
   'resume',
