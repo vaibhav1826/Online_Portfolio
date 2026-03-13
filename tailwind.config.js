@@ -17,6 +17,19 @@ export default {
           900: '#2b3523',
           950: '#151c10',
         },
+        olive: {
+          50:  '#f5f7e8',
+          100: '#e3e9c0',
+          200: '#c9d48a',
+          300: '#aebe55',
+          400: '#96aa38',
+          500: '#708238',
+          600: '#636B2F',
+          700: '#4b5124',
+          800: '#32381a',
+          900: '#1e220f',
+          950: '#0f1205',
+        },
         slate: {
           850: '#181c16',
           950: '#0e110d',
@@ -27,8 +40,9 @@ export default {
         body: ['Inter', 'sans-serif'],
       },
       boxShadow: {
-        glow: '0 0 30px rgba(103, 127, 76, 0.3)',
-        'glow-lg': '0 0 60px rgba(103, 127, 76, 0.4)',
+        glow: '0 0 30px rgba(112, 130, 56, 0.35)',
+        'glow-lg': '0 0 60px rgba(112, 130, 56, 0.5)',
+        'glow-olive': '0 0 45px rgba(112, 130, 56, 0.65)',
       },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out',
@@ -56,12 +70,11 @@ export default {
     function ({ addUtilities }) {
       addUtilities({
         '.glass-effect': {
-          'background': 'rgba(255, 255, 255, 0.05)',
-          'backdrop-filter': 'blur(10px)',
-          'border': '1px solid rgba(255, 255, 255, 0.1)',
+          'background': 'rgba(112, 130, 56, 0.08)',
+          'backdrop-filter': 'blur(12px)',
+          'border': '1px solid rgba(112, 130, 56, 0.2)',
         },
       })
     },
-  ]
+  ],
 }
-

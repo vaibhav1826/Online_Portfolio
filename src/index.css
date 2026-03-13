@@ -9,7 +9,9 @@
 }
 
 body {
-  @apply bg-slate-950 text-white font-body antialiased;
+  @apply bg-olive-950 text-white font-body antialiased;
+  background: linear-gradient(135deg, #0f1205 0%, #1e220f 40%, #32381a 70%, #0f1205 100%);
+  min-height: 100vh;
 }
 
 #root {
@@ -29,4 +31,3 @@ body {
   background-size: 200% 200%;
   animation: gradient-shift 8s ease infinite;
 }
-

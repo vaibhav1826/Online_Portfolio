@@ -31,7 +31,7 @@ function App() {
 
   return (
     <Router>
-      <div className="relative min-h-screen bg-forest-50 text-slate-950 flex flex-col">
+      <div className="relative min-h-screen bg-olive-950 text-white flex flex-col">
         <ToastContainer
           position="bottom-right"
           toastClassName="glass-panel !bg-slate-900/90 !text-white !shadow-glow !rounded-2xl !px-5 !py-4 !text-sm !font-medium"
