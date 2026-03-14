@@ -55,14 +55,14 @@ const DynamicResume = ({ id }: DynamicResumeProps) => {
   }
 
   return (
-    <section id={id} className="flex flex-col gap-10">
+    <section id={id} className="flex flex-col gap-8 sm:gap-10">
       <SectionTitle
         eyebrow="professional experience"
         title="Resume & Qualifications"
         subtitle="Expand each section to explore my professional journey, skills, and achievements in detail."
       />
 
-      <AnimatedCard className="space-y-8">
+      <AnimatedCard className="space-y-6 sm:space-y-8 px-4 sm:px-8 py-6 sm:py-10">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.35em] text-forest-600 font-semibold">
@@ -129,7 +129,7 @@ const DynamicResume = ({ id }: DynamicResumeProps) => {
               >
                 <button
                   onClick={() => toggleSection(section.title)}
-                  className="flex w-full items-center justify-between px-6 py-4 text-left hover:bg-forest-50 transition"
+                  className="flex w-full items-center justify-between px-4 sm:px-6 py-4 text-left hover:bg-forest-50 transition"
                 >
                   <div>
                     <p className="text-xs uppercase tracking-[0.3em] text-forest-600 font-semibold mb-1">
@@ -156,7 +156,7 @@ const DynamicResume = ({ id }: DynamicResumeProps) => {
                   animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
                   transition={{ duration: 0.35, ease: 'easeInOut' }}
                 >
-                  <div className="space-y-4 px-6 pb-6">
+                  <div className="space-y-4 px-4 sm:px-6 pb-6">
                     {section.items.map((item) => (
                       <div
                         key={item.title}
