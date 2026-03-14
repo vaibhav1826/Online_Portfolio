@@ -40,16 +40,16 @@ const skillsData = [
 const SkillsShowcase = ({ id }: SkillsShowcaseProps) => {
 
   return (
-    <section id={id} className="py-20 bg-forest-50/50">
+    <section id={id} className="py-12 sm:py-20 bg-forest-50/50">
       <div className="container mx-auto px-4 max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
             Technical <span className="text-forest-600">Proficiency</span>
           </h2>
           <p className="text-forest-800/80 text-lg max-w-2xl mx-auto">
