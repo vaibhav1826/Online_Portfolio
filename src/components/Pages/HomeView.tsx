@@ -4,6 +4,7 @@ import HeroSection from '../Sections/HeroSection'
 import SkillsShowcase from '../Sections/SkillsShowcase'
 import DynamicResume from '../Sections/DynamicResume'
 import ContactForm from '../Sections/ContactForm'
+import ProjectsShowcase from '../Sections/ProjectsShowcase'
 
 const HomeView = () => {
     const location = useLocation()
@@ -26,9 +27,10 @@ const HomeView = () => {
     }, [location])
 
     return (
-        <main className="relative z-10 mx-auto flex max-w-6xl flex-col gap-24 px-6 py-20 sm:px-8">
+        <main className="relative z-10 mx-auto w-full overflow-hidden flex max-w-6xl flex-col gap-12 sm:gap-24 px-4 sm:px-6 pt-12 sm:pt-20 pb-12 sm:py-20 lg:px-8">
             <HeroSection id="hero" />
             <SkillsShowcase id="skills" />
+            <ProjectsShowcase id="featured-projects" featuredOnly />
             <DynamicResume id="resume" />
             <ContactForm id="contact" />
         </main>
