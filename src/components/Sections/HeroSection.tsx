@@ -1,13 +1,12 @@
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaEnvelope, FaMapMarkerAlt, FaDownload } from 'react-icons/fa'
-import { useState, useRef } from 'react'
+import { useRef } from 'react'
 
 type HeroSectionProps = {
   id: string
 }
 
 const HeroSection = ({ id }: HeroSectionProps) => {
-  const [isHovering, setIsHovering] = useState(false)
   const imageRef = useRef<HTMLDivElement>(null)
 
   const mouseX = useMotionValue(0)
@@ -34,52 +33,27 @@ const HeroSection = ({ id }: HeroSectionProps) => {
   const handleMouseLeave = () => {
     mouseX.set(0)
     mouseY.set(0)
-    setIsHovering(false)
   }
 
   return (
-    <section id={id} className="relative py-20 overflow-hidden">
-      {/* Animated background particles */}
-      <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-forest-400/20 rounded-full"
-            initial={{
-              x: typeof window !== 'undefined' ? Math.random() * window.innerWidth : 0,
-              y: typeof window !== 'undefined' ? Math.random() * window.innerHeight : 0,
-            }}
-            animate={{
-              x: typeof window !== 'undefined' ? Math.random() * window.innerWidth : 0,
-              y: typeof window !== 'undefined' ? Math.random() * window.innerHeight : 0,
-              scale: [1, 1.5, 1],
-              opacity: [0.3, 0.8, 0.3],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="absolute inset-0 bg-gradient-to-br from-forest-100/40 via-forest-50/30 to-transparent" />
+    <section id={id} className="relative py-12 sm:py-20 overflow-hidden w-full">
+      <div className="absolute inset-0 bg-gradient-to-br from-forest-100/40 via-forest-50/30 to-transparent pointer-events-none" />
 
       <div className="relative container mx-auto px-4 max-w-6xl">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="flex flex-col items-center gap-10 lg:grid lg:grid-cols-2 lg:items-center">
+
+          {/* Image column */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative"
+            className="relative w-full flex justify-center order-first lg:order-none"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            onMouseEnter={() => setIsHovering(true)}
           >
             <motion.div
               ref={imageRef}
-              className="relative w-80 h-80 mx-auto perspective-1000"
+              className="relative w-52 h-52 sm:w-72 sm:h-72 lg:w-80 lg:h-80 perspective-1000"
               style={{
                 rotateX: rotateXSpring,
                 rotateY: rotateYSpring,
@@ -88,41 +62,15 @@ const HeroSection = ({ id }: HeroSectionProps) => {
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              {/* Subtle animated gradient glow */}
-              <motion.div
-                className="absolute inset-0 rounded-3xl bg-gradient-to-br from-forest-500 via-emerald-400 to-teal-500 blur-xl opacity-60"
-                animate={{
-                  scale: isHovering ? [1, 1.05, 1] : 1,
-                  opacity: isHovering ? 0.8 : 0.6
-                }}
-                transition={{
-                  scale: {
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }
-                }}
-              />
-
-              {/* Single elegant ring */}
-              <motion.div
-                className="absolute inset-[-4px] rounded-[2rem] border-2 border-forest-400/30"
-                animate={{
-                  rotate: [0, 360],
-                }}
-                transition={{
-                  duration: 30,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-              />
+              {/* Static gradient ring */}
+              <div className="absolute inset-[-6px] rounded-[2.5rem] border-2 border-forest-400/20" />
 
               {/* Image container */}
               <motion.div
-                className="absolute inset-2 rounded-3xl overflow-hidden bg-slate-900 border-4 border-slate-800"
+                className="absolute inset-0 rounded-3xl overflow-hidden bg-slate-900 border-4 border-slate-800 shadow-2xl"
                 whileHover={{
-                  borderColor: "rgb(34, 197, 94)", // green-500
-                  boxShadow: "0 0 30px rgba(34, 197, 94, 0.3)",
+                  borderColor: "rgb(34, 197, 94)",
+                  boxShadow: "0 0 30px rgba(34, 197, 94, 0.4)",
                 }}
               >
                 <motion.img
@@ -132,67 +80,61 @@ const HeroSection = ({ id }: HeroSectionProps) => {
                   whileHover={{ scale: 1.08 }}
                   transition={{ duration: 0.4 }}
                 />
-
-                {/* Hover overlay effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-t from-forest-600/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                />
               </motion.div>
 
               {/* Professional Floating badge */}
               <motion.div
-                className="absolute -bottom-6 -right-6 bg-white/90 backdrop-blur-md rounded-2xl px-6 py-4 shadow-xl border border-forest-200"
-                initial={{ scale: 0, y: 20 }}
+                className="absolute -bottom-2 -right-2 sm:-bottom-6 sm:-right-6 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl px-3 py-1.5 sm:px-6 sm:py-4 shadow-xl border border-forest-100 z-10"
+                initial={{ scale: 0, y: 10 }}
                 animate={{
                   scale: 1,
                   y: 0,
                 }}
                 transition={{
-                  delay: 0.5,
+                  delay: 0.6,
                   type: 'spring',
-                  stiffness: 200,
+                  stiffness: 260,
                   damping: 20
                 }}
               >
                 <div className="text-slate-900 text-center">
-                  <div className="text-xl font-bold bg-gradient-to-r from-forest-600 to-emerald-600 bg-clip-text text-transparent">Available</div>
-                  <div className="text-sm text-forest-800">For Opportunities</div>
+                  <div className="text-sm sm:text-xl font-bold bg-gradient-to-r from-forest-600 to-emerald-600 bg-clip-text text-transparent">Available</div>
+                  <div className="text-[10px] sm:text-sm text-forest-800 font-medium whitespace-nowrap">For Opportunities</div>
                 </div>
               </motion.div>
             </motion.div>
           </motion.div>
 
+          {/* Text column */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-6"
+            className="space-y-6 text-center lg:text-left z-20 w-full"
           >
             <div className="space-y-4">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.6 }}
+                className="flex items-center gap-3 justify-center lg:justify-start"
               >
-                <p className="text-forest-600 font-semibold text-lg flex items-center gap-2">
-                  <motion.span
-                    className="inline-block w-12 h-0.5 bg-forest-400"
-                    animate={{ width: ["0px", "48px"] }}
-                    transition={{ delay: 0.6, duration: 0.6 }}
-                  />
+                <div className="h-0.5 w-8 bg-forest-400 hidden sm:block" />
+                <p className="text-forest-600 font-bold text-sm sm:text-lg uppercase tracking-wider">
                   Full Stack Developer
                 </p>
+                <div className="h-0.5 w-8 bg-forest-400 hidden sm:block" />
               </motion.div>
 
               <motion.h1
-                className="text-5xl md:text-6xl font-bold text-slate-900"
+                className="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900 leading-[1.1]"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
               >
                 Vaibhav{' '}
                 <motion.span
-                  className="bg-gradient-to-r from-forest-400 via-emerald-400 to-forest-500 bg-clip-text text-transparent"
+                  className="bg-gradient-to-r from-forest-500 via-emerald-500 to-forest-600 bg-clip-text text-transparent"
                   animate={{
                     backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
                   }}
@@ -207,7 +149,7 @@ const HeroSection = ({ id }: HeroSectionProps) => {
               </motion.h1>
 
               <motion.p
-                className="text-xl text-forest-800/90 leading-relaxed"
+                className="text-base sm:text-xl text-forest-800/90 leading-relaxed max-w-xl mx-auto lg:mx-0"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
@@ -217,30 +159,19 @@ const HeroSection = ({ id }: HeroSectionProps) => {
               </motion.p>
 
               <motion.div
-                className="flex items-center gap-3 text-forest-700"
+                className="flex items-center gap-2 text-forest-700 justify-center lg:justify-start text-sm sm:text-base font-medium"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.9 }}
               >
-                <motion.div
-                  animate={{
-                    y: [0, -5, 0],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <FaMapMarkerAlt className="text-forest-600" />
-                </motion.div>
+                <FaMapMarkerAlt className="text-forest-600" />
                 <span>Jalandhar, Punjab, India</span>
               </motion.div>
             </div>
 
             <motion.div
-              className="flex flex-wrap gap-4"
-              initial={{ opacity: 0, y: 20 }}
+              className="flex flex-wrap gap-3 justify-center lg:justify-start"
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1 }}
             >
@@ -255,51 +186,29 @@ const HeroSection = ({ id }: HeroSectionProps) => {
                   target={link.href.startsWith('http') ? "_blank" : undefined}
                   rel={link.href.startsWith('http') ? "noreferrer" : undefined}
                   className={`flex items-center gap-2 ${link.bg
-                    ? 'bg-forest-600 hover:bg-forest-700 text-white'
-                    : 'bg-white hover:bg-forest-50 text-slate-900'
-                    } px-6 py-3 rounded-lg transition-all duration-300 ${!link.bg ? 'border border-forest-200' : ''
-                    }`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.1 + index * 0.1 }}
-                  whileHover={{
-                    scale: 1.02,
-                    y: -2,
-                    boxShadow: link.color === 'forest'
-                      ? '0 10px 30px rgba(34, 197, 94, 0.3)'
-                      : link.color === 'emerald'
-                        ? '0 10px 30px rgba(16, 185, 129, 0.3)'
-                        : link.color === 'teal'
-                          ? '0 10px 30px rgba(20, 184, 166, 0.3)'
-                          : '0 10px 30px rgba(0, 0, 0, 0.3)',
-                  }}
+                    ? 'bg-forest-600 hover:bg-forest-700 text-white shadow-md'
+                    : 'bg-white hover:bg-forest-50 text-slate-900 border border-forest-200'
+                    } px-4 py-2.5 rounded-xl transition-all duration-300 text-xs sm:text-sm font-bold`}
+                  whileHover={{ y: -2, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
+                  transition={{ delay: 1.1 + index * 0.1 }}
                 >
-                  <div>
-                    <link.icon className="text-xl" />
-                  </div>
+                  <link.icon className="text-lg" />
                   <span>{link.label}</span>
                 </motion.a>
               ))}
 
-              {/* Download Resume Button */}
               <motion.a
-                href="/LpuResume.pdf"
+                href="/Lpu_Resume.pdf"
                 download="Vaibhav_Bhatt_Resume.pdf"
-                className="flex items-center gap-2 bg-gradient-to-r from-forest-600 to-emerald-600 hover:from-forest-700 hover:to-emerald-700 text-white px-6 py-3 rounded-lg transition-all duration-300 border border-forest-400/30"
+                className="flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-xl transition-all duration-300 hover:bg-slate-800 shadow-md text-xs sm:text-sm font-bold border border-slate-700"
+                whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.5 }}
-                whileHover={{
-                  scale: 1.02,
-                  y: -2,
-                  boxShadow: '0 10px 30px rgba(34, 197, 94, 0.3)',
-                }}
-                whileTap={{ scale: 0.98 }}
               >
-                <div>
-                  <FaDownload className="text-xl" />
-                </div>
+                <FaDownload className="text-lg" />
                 <span>Resume</span>
               </motion.a>
             </motion.div>
