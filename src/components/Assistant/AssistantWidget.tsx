@@ -47,46 +47,75 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
   const getAnswer = (q: string): string => {
     const s = q.toLowerCase()
 
+    // Greetings & Identity
+    if (/^(hi|hello|hey|greetings|hola|sup)\b/i.test(s) || /how are you/i.test(s)) {
+      return "Hi there! I'm Vaibhav's AI portfolio assistant. I'm doing great, thanks for asking! How can I help you explore his work?"
+    }
+    if (/(who are you|what are you|are you a human|are you an ai|bot)/i.test(s)) {
+      return "I'm a custom-built digital assistant embedded in Vaibhav's portfolio. I don't have feelings, but I do have all the answers about his skills, projects, and experience!"
+    }
+
+    // "Tricky" / Interview questions
+    if (/(why should.*hire|what makes.*unique|best quality|strength)/i.test(s)) {
+      return "Vaibhav combines deep full-stack knowledge (MERN, PHP, React) with a strong eye for UI/UX and animation. He doesn't just build backends; he builds complete, production-ready experiences like Gamified Learning platforms with real-time sockets."
+    }
+    if (/(weakness|failure|mistake)/i.test(s)) {
+      return "Like any dedicated developer, Vaibhav sometimes dives too deep into optimizing small details. However, he's learned to balance pixel-perfection with strict project deadlines and agile delivery."
+    }
+    if (/(hobbies|free time|outside of work|fun)/i.test(s)) {
+      return "When he's not coding full-stack applications, Vaibhav loves exploring new UI trends, contributing to open-source, and tackling algorithmic challenges."
+    }
+    if (/(relocate|move to|willing to move|remote)/i.test(s)) {
+      return "Vaibhav is based in Jalandhar, Punjab, but is completely open to remote work, hybrid roles, or relocating for the right opportunity!"
+    }
+
+    // About *this* portfolio site
+    if (/(how did you build this portfolio|what is this site made of|portfolio stack|tech stack of this site)/i.test(s)) {
+      return "This portfolio is built using React 18, TypeScript, and Vite! It uses Tailwind CSS for the design system, Framer Motion for the fluid physics-based animations, and Recharts/D3.js for the data visualizations."
+    }
+
     // Contact information
-    if (/(contact|email|linkedin|github|phone|reach)/i.test(s)) {
+    if (/(contact|email|linkedin|github|phone|reach|call|message)/i.test(s)) {
       return [
-        '📬 Contact Vaibhav:',
+        '📬 You can reach Vaibhav instantly:',
         '• Email: vaibhavbhatt145@gmail.com',
+        '• Phone: +91 9058065003',
         '• LinkedIn: linkedin.com/in/vaibhav-bhatt-382971283/',
         '• GitHub: github.com/vaibhav1826',
-        '• Phone: +91 9058065003',
       ].join('\n')
     }
 
     // Skills
-    if (/(skills?|tech|languages?|framework|stack)/i.test(s)) {
+    if (/(skills?|tech|languages?|framework|stack|know|good at|proficient)/i.test(s)) {
       const skillsSection = resumeSections.find((x) => x.title.toLowerCase().includes('skills'))
-      if (!skillsSection) return 'Skills information is not available.'
+      if (!skillsSection) return 'Skills information is temporarily unavailable.'
       return (
-        '🛠️ Technical Skills:\n' +
+        '🛠️ Technical Capabilities:\n' +
         skillsSection.items.map((i) => `• ${i.title}: ${i.subtitle}`).join('\n')
       )
     }
 
     // Projects
-    if (/(projects?|built|work|apps?|portfolio)/i.test(s)) {
+    if (/(projects?|built|work|apps?|portfolio|creations|made)/i.test(s)) {
       return (
-        '🚀 Projects built by Vaibhav:\n\n' +
+        '🚀 Featured Projects:\n\n' +
         projectShowcase
+          .slice(0, 3) // Show top 3 to avoid wall of text
           .map(
             (p, i) =>
-              `${i + 1}. ${p.name}\n   ${p.description}\n   Stack: ${p.stack.slice(0, 4).join(', ')}${p.stack.length > 4 ? ` +${p.stack.length - 4} more` : ''}${p.demo ? `\n   Live: ${p.demo}` : ''}`,
+              `${i + 1}. ${p.name}\n   ${p.description}\n   Stack: ${p.stack.slice(0, 4).join(', ')}`
           )
-          .join('\n\n')
+          .join('\n\n') + 
+          '\n\n(You can see all of these in detail on the Projects page!)'
       )
     }
 
     // Education / CGPA
-    if (/(education|university|school|college|degree|cgpa|gpa|grade|marks|percentage)/i.test(s)) {
+    if (/(education|university|school|college|degree|cgpa|gpa|grade|marks|percentage|study|studied)/i.test(s)) {
       const ed = resumeSections.find((x) => x.title.toLowerCase().includes('education'))
       if (!ed) return 'Education details not available.'
       return (
-        '🎓 Education:\n\n' +
+        '🎓 Academic Background:\n\n' +
         ed.items
           .map((i) => `• ${i.title}\n  ${i.subtitle}${i.period ? `  (${i.period})` : ''}`)
           .join('\n\n')
@@ -94,57 +123,51 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
     }
 
     // Certificates
-    if (/(certificates?|courses?|certifications?)/i.test(s)) {
+    if (/(certificates?|courses?|certifications?|certified)/i.test(s)) {
       const cert = resumeSections.find((x) => x.title.toLowerCase().includes('certificates'))
       if (!cert) return 'Certificates not available.'
       return (
-        '📜 Certificates & Courses:\n' +
+        '📜 Certifications Highlights:\n' +
         cert.items.map((i) => `• ${i.title}${i.period ? ` (${i.period})` : ''}`).join('\n')
       )
     }
 
     // Achievements / hackathon
-    if (/(achievements?|awards?|hackathon|recognition|volunteer)/i.test(s)) {
+    if (/(achievements?|awards?|hackathon|recognition|volunteer|proud of)/i.test(s)) {
       const ach = resumeSections.find((x) => x.title.toLowerCase().includes('achievements'))
-      if (!ach) return 'Achievements not available.'
+      if (!ach) return "Vaibhav reached the Top 20 at the Blitz Byte Hackathon (Nov 2025) and volunteers actively with local welfare associations."
       return (
-        '🏆 Achievements:\n' +
-        ach.items.map((i) => `• ${i.title}${i.period ? ` — ${i.period}` : ''}`).join('\n') +
-        '\n\nVaibhav reached the Top 20 at the Blitz Byte Hackathon (Nov 2025) and volunteered with the SIDCUL Contractors and Welfare Association.'
+        '🏆 Key Achievements:\n' +
+        ach.items.map((i) => `• ${i.title}${i.period ? ` — ${i.period}` : ''}`).join('\n')
       )
     }
 
     // Availability / hiring
-    if (/(available|hire|hiring|internship|job|opportunit|open to|looking for)/i.test(s)) {
+    if (/(available|hire|hiring|internship|job|opportunit|open to|looking for|recruit)/i.test(s)) {
       return (
-        '✅ Yes! Vaibhav is actively open to internship and junior developer roles.\n\n' +
-        'He is based in Jalandhar, Punjab, India and is comfortable with remote or hybrid positions.\n\n' +
-        'Reach out at vaibhavbhatt145@gmail.com or connect on LinkedIn.'
+        '✅ Yes! Vaibhav is actively looking for internship and junior developer opportunities.\n\n' +
+        'He is comfortable with remote, hybrid, or on-site roles. Want to set up an interview? Email him at vaibhavbhatt145@gmail.com!'
       )
     }
 
     // Resume / download
-    if (/(resume|cv|download|pdf)/i.test(s)) {
+    if (/(resume|cv|download|pdf|paper)/i.test(s)) {
       return (
-        '📄 You can download Vaibhav\'s resume directly from the Hero section — look for the "Resume" button at the top of the page.'
+        '📄 You can grab his full resume using the "Download Resume" button right on the main home page.'
       )
     }
 
     // Experience / timeline
-    if (/(experience|years?|timeline|history|background)/i.test(s)) {
+    if (/(experience|years?|timeline|history|background|how long)/i.test(s)) {
       return [
-        '📅 Project Timeline:',
-        '• Jan 2025 — Crop Yield Prediction (PHP/MySQL full-stack)',
-        '• May 2025 — Virtu Swift Digital Asset Platform',
-        '• Sep 2025 — Smart Payroll & Employee Management (MERN)',
-        '• Nov 2025 — Education Platform with gamification & WebSockets (MERN)',
-        '• Feb 2026 — Online Portfolio (React + TypeScript + Vite)',
-        '',
-        'Vaibhav has built 5 projects spanning 1+ year of active development.',
+        '📅 Experience & Timeline:',
+        '• Vaibhav has been actively building full-stack applications for over a year.',
+        '• Key milestones: Crop Yield Prediction (Jan 2025), Virtu Swift (May 2025), Smart Payroll (Sep 2025), and his massive Gamified Education Platform (Nov 2025).',
       ].join('\n')
     }
 
-    return "I can help with: skills, projects, education, CGPA, certificates, achievements, availability, experience timeline, and contact info. What would you like to know?"
+    // Fallback / Catch-all
+    return "Hm, that's a tricky one! I'm still learning the nuances of human conversation. But I can tell you all about Vaibhav's projects, technical skills, education, or how to contact him! Try asking 'What are your top skills?'"
   }
 
   const container = useMemo(
