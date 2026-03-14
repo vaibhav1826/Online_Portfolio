@@ -8,12 +8,18 @@
   color-scheme: dark;
 }
 
-body {
+html, body {
   @apply bg-slate-950 text-white font-body antialiased;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 #root {
   @apply min-h-screen;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .glass-panel {
