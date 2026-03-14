@@ -6,7 +6,7 @@ const Footer = () => {
   ]
 
   return (
-    <footer className="relative z-10 mt-24 bg-transparent pb-16 pt-10">
+    <footer className="relative z-10 mt-12 sm:mt-24 bg-transparent pb-16 pt-10">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 text-center text-sm text-gray-400 sm:flex-row sm:justify-between sm:text-left">
         <p className="max-w-sm text-sm">
           “Keep growing, one commit at a time.” — A living reflection of code, creativity, and
