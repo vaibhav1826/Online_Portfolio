@@ -20,7 +20,7 @@ export default function ImageCarousel({ images, altText }: ImageCarouselProps) {
             <img
                 src={images[0]}
                 alt={altText}
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
             />
         )
     }
@@ -90,7 +90,7 @@ export default function ImageCarousel({ images, altText }: ImageCarouselProps) {
                             paginate(-1);
                         }
                     }}
-                    className="absolute inset-0 h-full w-full object-cover"
+                    className="absolute inset-0 h-full w-full object-cover object-top"
                 />
             </AnimatePresence>
 
