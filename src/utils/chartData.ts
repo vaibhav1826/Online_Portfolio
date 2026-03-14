@@ -52,8 +52,9 @@ export const projectShowcase = [
     demo: null,
     images: [
       '/projects/virtu-swift/Screenshot_1.png',
-      '/projects/virtu-swift/Screenshot_8.png',
-      '/projects/virtu-swift/Screenshot_6.png',
+      '/projects/virtu-swift/virtuswift_2.png',
+      '/projects/virtu-swift/virtuswift_3.png',
+      '/projects/virtu-swift/DSA_lpu.png',
     ],
   },
   {
