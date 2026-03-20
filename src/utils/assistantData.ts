@@ -1,6 +1,6 @@
 // A comprehensive dictionary of user intents, keywords, and pre-calculated responses.
 // Each response follows the rule: Summarize the question -> Provide the answer based on the portfolio.
-export const assistantKnowledgeBase = [
+const assistantKnowledgeBase = [
   {
     intent: 'greeting',
     keywords: ['hi', 'hello', 'hey', 'greetings', 'hola', 'sup', 'morning', 'afternoon', 'evening'],

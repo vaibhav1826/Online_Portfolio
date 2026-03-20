@@ -1,31 +1,3 @@
-export const languageUsage = [
-  { name: 'TypeScript', value: 42 },
-  { name: 'React', value: 28 },
-  { name: 'Node.js', value: 18 },
-  { name: 'Python', value: 12 },
-]
-
-export const commitTrends = [
-  { month: 'Jan', commits: 32 },
-  { month: 'Feb', commits: 48 },
-  { month: 'Mar', commits: 41 },
-  { month: 'Apr', commits: 55 },
-  { month: 'May', commits: 62 },
-  { month: 'Jun', commits: 58 },
-  { month: 'Jul', commits: 64 },
-  { month: 'Aug', commits: 70 },
-  { month: 'Sep', commits: 77 },
-  { month: 'Oct', commits: 68 },
-  { month: 'Nov', commits: 72 },
-  { month: 'Dec', commits: 80 },
-]
-
-export const skillGrowth = [
-  { skill: 'Frontend', projects: 12, impact: 85 },
-  { skill: 'Backend', projects: 9, impact: 74 },
-  { skill: 'Data Visualization', projects: 6, impact: 68 },
-  { skill: 'Automation', projects: 5, impact: 71 },
-]
 
 export const projectShowcase = [
   {
@@ -101,7 +73,7 @@ export const projectShowcase = [
   },
 ]
 
-export type ResumeSection = {
+type ResumeSection = {
   title: string
   items: Array<{ title: string; subtitle: string; period: string; description: string }>
 }
@@ -264,32 +236,4 @@ export const resumeSections: ResumeSection[] = [
   },
 ]
 
-export const mindspaceGraphData = {
-  nodes: [
-    { id: 'React', group: 'Core' },
-    { id: 'TypeScript', group: 'Core' },
-    { id: 'Tailwind', group: 'Core' },
-    { id: 'D3.js', group: 'Visualization' },
-    { id: 'Framer Motion', group: 'Experience' },
-    { id: 'Node.js', group: 'Platform' },
-    { id: 'Automation', group: 'Focus' },
-    { id: 'Analytics', group: 'Focus' },
-    { id: 'Sustainability', group: 'Values' },
-    { id: 'UX Research', group: 'Process' },
-    { id: 'Projects', group: 'Output' },
-  ],
-  links: [
-    { source: 'React', target: 'TypeScript', value: 3 },
-    { source: 'React', target: 'Tailwind', value: 2 },
-    { source: 'React', target: 'Framer Motion', value: 2 },
-    { source: 'TypeScript', target: 'Automation', value: 1 },
-    { source: 'Tailwind', target: 'UX Research', value: 1 },
-    { source: 'D3.js', target: 'Analytics', value: 3 },
-    { source: 'Automation', target: 'Analytics', value: 2 },
-    { source: 'Automation', target: 'Projects', value: 1 },
-    { source: 'Analytics', target: 'Projects', value: 2 },
-    { source: 'Sustainability', target: 'Projects', value: 2 },
-    { source: 'Sustainability', target: 'UX Research', value: 1 },
-  ],
-}
 
