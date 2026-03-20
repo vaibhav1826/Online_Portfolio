@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { resumeSections, projectShowcase } from '../../utils/chartData'
+import { askGemini, isGeminiConfigured } from '../../services/geminiService'
+import { findBestMatch } from '../../utils/assistantData'
 
 type AssistantWidgetProps = {
   open: boolean
@@ -26,148 +27,48 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
     },
   ])
   const [input, setInput] = useState('')
+  const [isTyping, setIsTyping] = useState(false)
   const endRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, open])
+  }, [messages, open, isTyping])
 
-  const handleAsk = (text: string) => {
+  const handleAsk = async (text: string) => {
     const q = text.trim()
-    if (!q) return
+    if (!q || isTyping) return
+    
     setMessages((m) => [...m, { role: 'user', content: q }])
     setInput('')
+    setIsTyping(true)
 
-    const reply = getAnswer(q)
-    setTimeout(() => {
+    try {
+      if (isGeminiConfigured()) {
+        try {
+          const reply = await askGemini(q)
+          setMessages((m) => [...m, { role: 'assistant', content: reply }])
+          return
+        } catch (apiError) {
+          console.error('Gemini API failed, falling back to static logic:', apiError)
+          // Fall through to the backup logic below
+        }
+      }
+
+      // Fallback to static regex logic if api key is missing or API request fails
+      const reply = getAnswer(q)
+      await new Promise((resolve) => setTimeout(resolve, 600)) // simulate typing
       setMessages((m) => [...m, { role: 'assistant', content: reply }])
-    }, 200)
+      
+    } catch (error) {
+      console.error('Assistant Error:', error)
+      setMessages((m) => [...m, { role: 'assistant', content: "I'm having a little trouble thinking clearly right now. But feel free to explore the portfolio or contact Vaibhav directly!" }])
+    } finally {
+      setIsTyping(false)
+    }
   }
 
   const getAnswer = (q: string): string => {
-    const s = q.toLowerCase()
-
-    // Greetings & Identity
-    if (/^(hi|hello|hey|greetings|hola|sup)\b/i.test(s) || /how are you/i.test(s)) {
-      return "Hi there! I'm Vaibhav's AI portfolio assistant. I'm doing great, thanks for asking! How can I help you explore his work?"
-    }
-    if (/(who are you|what are you|are you a human|are you an ai|bot)/i.test(s)) {
-      return "I'm a custom-built digital assistant embedded in Vaibhav's portfolio. I don't have feelings, but I do have all the answers about his skills, projects, and experience!"
-    }
-
-    // "Tricky" / Interview questions
-    if (/(why should.*hire|what makes.*unique|best quality|strength)/i.test(s)) {
-      return "Vaibhav combines deep full-stack knowledge (MERN, PHP, React) with a strong eye for UI/UX and animation. He doesn't just build backends; he builds complete, production-ready experiences like Gamified Learning platforms with real-time sockets."
-    }
-    if (/(weakness|failure|mistake)/i.test(s)) {
-      return "Like any dedicated developer, Vaibhav sometimes dives too deep into optimizing small details. However, he's learned to balance pixel-perfection with strict project deadlines and agile delivery."
-    }
-    if (/(hobbies|free time|outside of work|fun)/i.test(s)) {
-      return "When he's not coding full-stack applications, Vaibhav loves exploring new UI trends, contributing to open-source, and tackling algorithmic challenges."
-    }
-    if (/(relocate|move to|willing to move|remote)/i.test(s)) {
-      return "Vaibhav is based in Jalandhar, Punjab, but is completely open to remote work, hybrid roles, or relocating for the right opportunity!"
-    }
-
-    // About *this* portfolio site
-    if (/(how did you build this portfolio|what is this site made of|portfolio stack|tech stack of this site)/i.test(s)) {
-      return "This portfolio is built using React 18, TypeScript, and Vite! It uses Tailwind CSS for the design system, Framer Motion for the fluid physics-based animations, and Recharts/D3.js for the data visualizations."
-    }
-
-    // Contact information
-    if (/(contact|email|linkedin|github|phone|reach|call|message)/i.test(s)) {
-      return [
-        '📬 You can reach Vaibhav instantly:',
-        '• Email: vaibhavbhatt145@gmail.com',
-        '• Phone: +91 9058065003',
-        '• LinkedIn: linkedin.com/in/vaibhav-bhatt-382971283/',
-        '• GitHub: github.com/vaibhav1826',
-      ].join('\n')
-    }
-
-    // Skills
-    if (/(skills?|tech|languages?|framework|stack|know|good at|proficient)/i.test(s)) {
-      const skillsSection = resumeSections.find((x) => x.title.toLowerCase().includes('skills'))
-      if (!skillsSection) return 'Skills information is temporarily unavailable.'
-      return (
-        '🛠️ Technical Capabilities:\n' +
-        skillsSection.items.map((i) => `• ${i.title}: ${i.subtitle}`).join('\n')
-      )
-    }
-
-    // Projects
-    if (/(projects?|built|work|apps?|portfolio|creations|made)/i.test(s)) {
-      return (
-        '🚀 Featured Projects:\n\n' +
-        projectShowcase
-          .slice(0, 3) // Show top 3 to avoid wall of text
-          .map(
-            (p, i) =>
-              `${i + 1}. ${p.name}\n   ${p.description}\n   Stack: ${p.stack.slice(0, 4).join(', ')}`
-          )
-          .join('\n\n') + 
-          '\n\n(You can see all of these in detail on the Projects page!)'
-      )
-    }
-
-    // Education / CGPA
-    if (/(education|university|school|college|degree|cgpa|gpa|grade|marks|percentage|study|studied)/i.test(s)) {
-      const ed = resumeSections.find((x) => x.title.toLowerCase().includes('education'))
-      if (!ed) return 'Education details not available.'
-      return (
-        '🎓 Academic Background:\n\n' +
-        ed.items
-          .map((i) => `• ${i.title}\n  ${i.subtitle}${i.period ? `  (${i.period})` : ''}`)
-          .join('\n\n')
-      )
-    }
-
-    // Certificates
-    if (/(certificates?|courses?|certifications?|certified)/i.test(s)) {
-      const cert = resumeSections.find((x) => x.title.toLowerCase().includes('certificates'))
-      if (!cert) return 'Certificates not available.'
-      return (
-        '📜 Certifications Highlights:\n' +
-        cert.items.map((i) => `• ${i.title}${i.period ? ` (${i.period})` : ''}`).join('\n')
-      )
-    }
-
-    // Achievements / hackathon
-    if (/(achievements?|awards?|hackathon|recognition|volunteer|proud of)/i.test(s)) {
-      const ach = resumeSections.find((x) => x.title.toLowerCase().includes('achievements'))
-      if (!ach) return "Vaibhav reached the Top 20 at the Blitz Byte Hackathon (Nov 2025) and volunteers actively with local welfare associations."
-      return (
-        '🏆 Key Achievements:\n' +
-        ach.items.map((i) => `• ${i.title}${i.period ? ` — ${i.period}` : ''}`).join('\n')
-      )
-    }
-
-    // Availability / hiring
-    if (/(available|hire|hiring|internship|job|opportunit|open to|looking for|recruit)/i.test(s)) {
-      return (
-        '✅ Yes! Vaibhav is actively looking for internship and junior developer opportunities.\n\n' +
-        'He is comfortable with remote, hybrid, or on-site roles. Want to set up an interview? Email him at vaibhavbhatt145@gmail.com!'
-      )
-    }
-
-    // Resume / download
-    if (/(resume|cv|download|pdf|paper)/i.test(s)) {
-      return (
-        '📄 You can grab his full resume using the "Download Resume" button right on the main home page.'
-      )
-    }
-
-    // Experience / timeline
-    if (/(experience|years?|timeline|history|background|how long)/i.test(s)) {
-      return [
-        '📅 Experience & Timeline:',
-        '• Vaibhav has been actively building full-stack applications for over a year.',
-        '• Key milestones: Crop Yield Prediction (Jan 2025), Virtu Swift (May 2025), Smart Payroll (Sep 2025), and his massive Gamified Education Platform (Nov 2025).',
-      ].join('\n')
-    }
-
-    // Fallback / Catch-all
-    return "Hm, that's a tricky one! I'm still learning the nuances of human conversation. But I can tell you all about Vaibhav's projects, technical skills, education, or how to contact him! Try asking 'What are your top skills?'"
+    return findBestMatch(q)
   }
 
   const container = useMemo(
@@ -188,7 +89,7 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
             <motion.div
               role="dialog"
               aria-modal="true"
-              className="glass-panel relative z-10 w-full max-w-lg p-4 sm:p-6"
+              className="relative z-10 w-full max-w-lg p-4 sm:p-6 rounded-3xl border border-forest-100 dark:border-white/10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl shadow-glow dark:shadow-none"
               initial={{ y: 40, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
@@ -196,11 +97,11 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
             >
               <div className="mb-3 flex items-center justify-between">
                 <div>
-                  <h3 className="font-display text-xl text-white">Portfolio Assistant</h3>
-                  <p className="text-xs text-gray-400 mt-0.5">Ask anything about Vaibhav's profile</p>
+                  <h3 className="font-display text-xl text-slate-900 dark:text-white transition-colors">Portfolio Assistant</h3>
+                  <p className="text-xs text-forest-700 dark:text-gray-400 mt-0.5 transition-colors">Ask anything about Vaibhav's profile</p>
                 </div>
                 <button
-                  className="rounded-full bg-white/10 px-3 py-1 text-sm text-gray-300 hover:bg-white/20 transition"
+                  className="rounded-full bg-forest-100 dark:bg-white/10 px-3 py-1 text-sm text-forest-800 dark:text-gray-300 hover:bg-forest-200 dark:hover:bg-white/20 transition-colors"
                   onClick={onClose}
                 >
                   Close
@@ -211,7 +112,7 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
                 {SUGGESTIONS.map((s) => (
                   <motion.button
                     key={s}
-                    className="rounded-full bg-white/5 px-3 py-1 text-xs text-gray-300 border border-white/10 hover:bg-forest-900/40 hover:border-forest-500/40 transition"
+                    className="rounded-full bg-forest-50 dark:bg-white/5 px-3 py-1 text-xs text-forest-800 dark:text-gray-300 border border-forest-200 dark:border-white/10 hover:bg-forest-100 dark:hover:bg-forest-900/40 dark:hover:border-forest-500/40 transition-colors"
                     onClick={() => handleAsk(s)}
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.97 }}
@@ -221,22 +122,36 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
                 ))}
               </div>
 
-              <div className="max-h-72 overflow-y-auto rounded-2xl border border-white/10 bg-white/5 p-3">
+              <div className="max-h-72 overflow-y-auto rounded-2xl border border-forest-100 dark:border-white/10 bg-forest-50/50 dark:bg-white/5 p-3 custom-scrollbar">
                 {messages.map((m, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
-                    className={`mb-3 whitespace-pre-wrap text-sm leading-relaxed ${m.role === 'assistant' ? 'text-gray-300' : 'text-white'
+                    className={`mb-3 whitespace-pre-wrap text-sm leading-relaxed ${m.role === 'assistant' ? 'text-forest-800 dark:text-gray-300' : 'text-slate-900 dark:text-white'
                       }`}
                   >
-                    <span className={`font-semibold text-xs uppercase tracking-wider mr-2 ${m.role === 'assistant' ? 'text-forest-400' : 'text-emerald-300'}`}>
+                    <span className={`font-semibold text-xs uppercase tracking-wider mr-2 ${m.role === 'assistant' ? 'text-forest-600 dark:text-forest-400' : 'text-emerald-600 dark:text-emerald-300'}`}>
                       {m.role === 'user' ? 'You' : 'Assistant'}
                     </span>
                     {m.content}
                   </motion.div>
                 ))}
+                {isTyping && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-3 text-sm text-forest-700 dark:text-gray-400 flex items-center gap-1.5"
+                  >
+                    <span className="font-semibold text-xs uppercase tracking-wider text-forest-600 dark:text-forest-400 mr-2">Assistant</span>
+                    <span className="flex gap-1">
+                      <motion.span animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.4, repeat: Infinity, delay: 0 }} className="h-1.5 w-1.5 bg-forest-400 rounded-full" />
+                      <motion.span animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.4, repeat: Infinity, delay: 0.2 }} className="h-1.5 w-1.5 bg-forest-400 rounded-full" />
+                      <motion.span animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.4, repeat: Infinity, delay: 0.4 }} className="h-1.5 w-1.5 bg-forest-400 rounded-full" />
+                    </span>
+                  </motion.div>
+                )}
                 <div ref={endRef} />
               </div>
 
@@ -251,7 +166,7 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask about skills, projects, or experience..."
-                  className="flex-1 rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder-gray-500 outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-500/40"
+                  className="flex-1 rounded-2xl border border-forest-200 dark:border-white/10 bg-white dark:bg-white/5 px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-forest-400 dark:placeholder-gray-500 outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-500/40 transition-colors shadow-sm"
                 />
                 <motion.button
                   type="submit"
@@ -267,7 +182,7 @@ const AssistantWidget = ({ open, onClose }: AssistantWidgetProps) => {
         ) : null}
       </AnimatePresence>
     ),
-    [open, messages, input],
+    [open, messages, input, isTyping],
   )
 
   return container
