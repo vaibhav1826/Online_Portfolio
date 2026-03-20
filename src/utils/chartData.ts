@@ -92,7 +92,7 @@ export const projectShowcase = [
     stack: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'D3.js', 'Recharts'],
     metric: 'Performant, accessible portfolio with rich animations and a custom design system',
     github: 'https://github.com/vaibhav1826/Online_Portfolio',
-    demo:'https://online-portfolio-murex-ten.vercel.app/',
+    demo: 'https://online-portfolio-murex-ten.vercel.app/',
     images: [
       '/projects/online-portfolio/online_1.png',
       '/projects/online-portfolio/online_2.png',

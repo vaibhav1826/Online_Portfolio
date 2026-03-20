@@ -15,9 +15,9 @@ const SectionTitle = ({
 
   return (
     <header className={`flex flex-col gap-3 ${alignment}`}>
-      <span className="text-xs uppercase tracking-[0.3em] sm:tracking-[0.45em] text-forest-600 font-semibold">{eyebrow}</span>
-      <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-slate-900 font-bold">{title}</h2>
-      {subtitle ? <p className="max-w-2xl text-forest-800/80">{subtitle}</p> : null}
+      <span className="text-xs uppercase tracking-[0.3em] sm:tracking-[0.45em] text-forest-600 dark:text-forest-400 font-semibold transition-colors">{eyebrow}</span>
+      <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-slate-900 dark:text-white font-bold transition-colors">{title}</h2>
+      {subtitle ? <p className="max-w-2xl text-forest-800/80 dark:text-gray-300 transition-colors">{subtitle}</p> : null}
     </header>
   )
 }

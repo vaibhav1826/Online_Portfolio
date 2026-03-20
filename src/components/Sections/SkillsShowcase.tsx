@@ -40,7 +40,7 @@ const skillsData = [
 const SkillsShowcase = ({ id }: SkillsShowcaseProps) => {
 
   return (
-    <section id={id} className="py-12 sm:py-20 bg-forest-50/50">
+    <section id={id} className="py-12 sm:py-20 bg-forest-50/50 dark:bg-slate-950/50 transition-colors">
       <div className="container mx-auto px-4 max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -49,10 +49,10 @@ const SkillsShowcase = ({ id }: SkillsShowcaseProps) => {
           transition={{ duration: 0.6 }}
           className="text-center mb-10 sm:mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            Technical <span className="text-forest-600">Proficiency</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 transition-colors">
+            Technical <span className="text-forest-600 dark:text-forest-400">Proficiency</span>
           </h2>
-          <p className="text-forest-800/80 text-lg max-w-2xl mx-auto">
+          <p className="text-forest-800/80 dark:text-gray-400 text-lg max-w-2xl mx-auto transition-colors">
             Statistical overview of my technical skills and expertise across different domains
           </p>
         </motion.div>
@@ -72,10 +72,10 @@ const SkillsShowcase = ({ id }: SkillsShowcaseProps) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-forest-100 hover:border-forest-300 transition-all shadow-sm"
+              className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-xl p-6 border border-forest-100 dark:border-slate-800 hover:border-forest-300 dark:hover:border-slate-600 transition-all shadow-sm"
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-slate-900">{category.category}</h3>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white transition-colors">{category.category}</h3>
                 <div
                   className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-white text-lg shadow-sm"
                   style={{ backgroundColor: category.color }}
@@ -85,7 +85,7 @@ const SkillsShowcase = ({ id }: SkillsShowcaseProps) => {
               </div>
 
               {/* Progress Bar */}
-              <div className="w-full bg-forest-100 rounded-full h-3 mb-4 overflow-hidden shadow-inner">
+              <div className="w-full bg-forest-100 dark:bg-slate-800 rounded-full h-3 mb-4 overflow-hidden shadow-inner transition-colors">
                 <motion.div
                   initial={{ width: 0 }}
                   whileInView={{ width: `${category.level}%` }}
@@ -101,7 +101,7 @@ const SkillsShowcase = ({ id }: SkillsShowcaseProps) => {
                 {category.skills.map((skill) => (
                   <span
                     key={skill}
-                    className="px-3 py-1 bg-forest-50 border border-forest-100 text-forest-800 rounded-full text-sm hover:bg-forest-100 transition-colors"
+                    className="px-3 py-1 bg-forest-50 dark:bg-slate-800 border border-forest-100 dark:border-slate-700 text-forest-800 dark:text-gray-300 rounded-full text-sm hover:bg-forest-100 dark:hover:bg-slate-700 transition-colors"
                   >
                     {skill}
                   </span>
@@ -119,27 +119,27 @@ const SkillsShowcase = ({ id }: SkillsShowcaseProps) => {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6"
         >
-          <div className="bg-forest-50/50 backdrop-blur-sm rounded-xl p-6 border border-forest-200 text-center shadow-sm hover:shadow-md transition-shadow">
-            <div className="text-4xl font-bold text-forest-600 mb-2">
+          <div className="bg-forest-50/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-forest-200 dark:border-slate-800 text-center shadow-sm hover:shadow-md transition-all">
+            <div className="text-4xl font-bold text-forest-600 dark:text-forest-400 mb-2">
               {Math.round(skillsData.reduce((acc, cat) => acc + cat.level, 0) / skillsData.length)}%
             </div>
-            <div className="text-forest-800/80 text-sm font-medium">Average Proficiency</div>
+            <div className="text-forest-800/80 dark:text-gray-400 text-sm font-medium transition-colors">Average Proficiency</div>
           </div>
-          <div className="bg-emerald-50/50 backdrop-blur-sm rounded-xl p-6 border border-emerald-200 text-center shadow-sm hover:shadow-md transition-shadow">
-            <div className="text-4xl font-bold text-emerald-600 mb-2">{skillsData.length}</div>
-            <div className="text-forest-800/80 text-sm font-medium">Skill Categories</div>
+          <div className="bg-emerald-50/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-emerald-200 dark:border-slate-800 text-center shadow-sm hover:shadow-md transition-all">
+            <div className="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">{skillsData.length}</div>
+            <div className="text-forest-800/80 dark:text-gray-400 text-sm font-medium transition-colors">Skill Categories</div>
           </div>
-          <div className="bg-teal-50/50 backdrop-blur-sm rounded-xl p-6 border border-teal-200 text-center shadow-sm hover:shadow-md transition-shadow">
-            <div className="text-4xl font-bold text-teal-600 mb-2">
+          <div className="bg-teal-50/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-teal-200 dark:border-slate-800 text-center shadow-sm hover:shadow-md transition-all">
+            <div className="text-4xl font-bold text-teal-600 dark:text-teal-400 mb-2">
               {skillsData.reduce((acc, cat) => acc + cat.skills.length, 0)}
             </div>
-            <div className="text-forest-800/80 text-sm font-medium">Total Technologies</div>
+            <div className="text-forest-800/80 dark:text-gray-400 text-sm font-medium transition-colors">Total Technologies</div>
           </div>
-          <div className="bg-green-50/50 backdrop-blur-sm rounded-xl p-6 border border-green-200 text-center shadow-sm hover:shadow-md transition-shadow">
-            <div className="text-4xl font-bold text-green-600 mb-2">
+          <div className="bg-green-50/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-green-200 dark:border-slate-800 text-center shadow-sm hover:shadow-md transition-all">
+            <div className="text-4xl font-bold text-green-600 dark:text-green-400 mb-2">
               {Math.max(...skillsData.map((cat) => cat.level))}%
             </div>
-            <div className="text-forest-800/80 text-sm font-medium">Highest Proficiency</div>
+            <div className="text-forest-800/80 dark:text-gray-400 text-sm font-medium transition-colors">Highest Proficiency</div>
           </div>
         </motion.div>
       </div>

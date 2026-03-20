@@ -50,14 +50,14 @@ const ProjectsShowcase = ({ id, featuredOnly = false }: ProjectsShowcaseProps) =
               onClick={() => setSelectedProject(selectedProject === index ? null : index)}
             >
               {/* Project image */}
-              <div className={`relative w-full shrink-0 overflow-hidden rounded-xl bg-forest-100 border border-forest-200 ${featuredOnly ? 'h-40' : 'h-48'}`}>
+              <div className={`relative w-full shrink-0 overflow-hidden rounded-xl bg-forest-100 dark:bg-slate-800 border border-forest-200 dark:border-slate-700 transition-colors ${featuredOnly ? 'h-40' : 'h-48'}`}>
                 <ImageCarousel images={project.images} altText={project.name} />
                 <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-slate-900/40 to-transparent pointer-events-none" />
               </div>
 
               <div className="space-y-2.5 flex-grow flex flex-col">
-                <h3 className={`font-display text-slate-900 font-bold ${featuredOnly ? 'text-lg leading-snug' : 'text-xl'}`}>{project.name}</h3>
-                <p className={`text-forest-800/90 line-clamp-2 mb-1 ${featuredOnly ? 'text-xs' : 'text-sm line-clamp-3'}`}>{project.description}</p>
+                <h3 className={`font-display text-slate-900 dark:text-white font-bold transition-colors ${featuredOnly ? 'text-lg leading-snug' : 'text-xl'}`}>{project.name}</h3>
+                <p className={`text-forest-800/90 dark:text-gray-300 transition-colors line-clamp-2 mb-1 ${featuredOnly ? 'text-xs' : 'text-sm line-clamp-3'}`}>{project.description}</p>
 
                 {/* Top 3 tech badges */}
                 <div className="flex flex-wrap gap-2 mt-auto">
@@ -68,13 +68,13 @@ const ProjectsShowcase = ({ id, featuredOnly = false }: ProjectsShowcaseProps) =
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.06 + i * 0.05 }}
-                      className={`rounded-full bg-forest-50 border border-forest-200 font-medium ${featuredOnly ? 'px-2 py-0.5 text-[10px]' : 'px-3 py-1 text-xs'} text-forest-700`}
+                      className={`rounded-full bg-forest-50 dark:bg-slate-900 border border-forest-200 dark:border-slate-700 font-medium transition-colors ${featuredOnly ? 'px-2 py-0.5 text-[10px]' : 'px-3 py-1 text-xs'} text-forest-700 dark:text-gray-300`}
                     >
                       {tech}
                     </motion.span>
                   ))}
                   {project.stack.length > 3 && (
-                    <span className={`rounded-full bg-forest-50 border border-forest-200 font-medium ${featuredOnly ? 'px-2 py-0.5 text-[10px]' : 'px-3 py-1 text-xs'} text-forest-700`}>
+                    <span className={`rounded-full bg-forest-50 dark:bg-slate-900 border border-forest-200 dark:border-slate-700 font-medium transition-colors ${featuredOnly ? 'px-2 py-0.5 text-[10px]' : 'px-3 py-1 text-xs'} text-forest-700 dark:text-gray-300`}>
                       +{project.stack.length - 3} more
                     </span>
                   )}
@@ -87,11 +87,11 @@ const ProjectsShowcase = ({ id, featuredOnly = false }: ProjectsShowcaseProps) =
                   transition={{ duration: 0.3, ease: 'easeInOut' }}
                   className="overflow-hidden"
                 >
-                  <div className="space-y-3 pt-3 border-t border-forest-100">
+                  <div className="space-y-3 pt-3 border-t border-forest-100 dark:border-slate-800 transition-colors">
                     {/* Key highlight */}
-                    <div className="flex items-start gap-2 rounded-xl bg-forest-50 border border-forest-200 px-3 py-2">
-                      <FaStar className="text-forest-500 mt-0.5 shrink-0" />
-                      <p className="text-sm text-forest-700 leading-snug">{project.metric}</p>
+                    <div className="flex items-start gap-2 rounded-xl bg-forest-50 dark:bg-slate-900 border border-forest-200 dark:border-slate-700 px-3 py-2 transition-colors">
+                      <FaStar className="text-forest-500 dark:text-forest-400 mt-0.5 shrink-0 transition-colors" />
+                      <p className="text-sm text-forest-700 dark:text-gray-300 leading-snug transition-colors">{project.metric}</p>
                     </div>
 
                     {/* Remaining tech stack chips */}
@@ -100,7 +100,7 @@ const ProjectsShowcase = ({ id, featuredOnly = false }: ProjectsShowcaseProps) =
                         {project.stack.slice(3).map((tech) => (
                           <span
                             key={tech}
-                            className="rounded-full bg-white px-3 py-1 text-xs text-forest-700 border border-forest-200 font-medium"
+                            className="rounded-full bg-white dark:bg-slate-800 px-3 py-1 text-xs text-forest-700 dark:text-gray-300 border border-forest-200 dark:border-slate-700 font-medium transition-colors"
                           >
                             {tech}
                           </span>
@@ -128,7 +128,7 @@ const ProjectsShowcase = ({ id, featuredOnly = false }: ProjectsShowcaseProps) =
                     target="_blank"
                     rel="noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className={`flex-1 rounded-lg border border-forest-300 font-medium text-center text-forest-700 transition hover:bg-forest-50 hover:border-forest-400 ${featuredOnly ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'}`}
+                    className={`flex-1 rounded-lg border border-forest-300 dark:border-slate-600 font-medium text-center text-forest-700 dark:text-gray-300 transition-colors hover:bg-forest-50 dark:hover:bg-slate-800 hover:border-forest-400 dark:hover:border-slate-500 ${featuredOnly ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'}`}
                   >
                     GitHub
                   </a>
@@ -149,7 +149,7 @@ const ProjectsShowcase = ({ id, featuredOnly = false }: ProjectsShowcaseProps) =
         >
           <Link
             to="/projects"
-            className="group flex items-center gap-2 rounded-xl bg-slate-900 px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:bg-slate-800 hover:shadow-xl hover:-translate-y-0.5"
+            className="group flex items-center gap-2 rounded-xl bg-forest-600 dark:bg-forest-500 px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:bg-forest-700 dark:hover:bg-forest-400 hover:shadow-xl hover:-translate-y-0.5"
           >
             View All Projects
             <motion.svg 
