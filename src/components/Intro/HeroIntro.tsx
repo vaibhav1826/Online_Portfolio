@@ -24,7 +24,7 @@ const HeroIntro = ({ onFinish }: HeroIntroProps) => {
   }, [onFinish])
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-forest-50 via-forest-100 to-[#c5d5b3] px-6 text-slate-900">
+    <div className="flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-forest-50 via-forest-100 to-[#c5d5b3] dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 transition-colors duration-500 px-6 text-slate-900 dark:text-gray-100">
       <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-10">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
@@ -49,18 +49,18 @@ const HeroIntro = ({ onFinish }: HeroIntroProps) => {
         >
           <h1 className="font-display text-4xl sm:text-5xl">
             Welcome to{' '}
-            <span className="bg-gradient-to-r from-forest-400 to-forest-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-forest-400 to-forest-600 dark:from-forest-300 dark:to-emerald-400 bg-clip-text text-transparent">
               Vaibhav Bhatt's
             </span>
             {' '}Portfolio
           </h1>
-          <p className="max-w-xl text-balance text-base text-forest-800/80 sm:text-lg">
+          <p className="max-w-xl text-balance text-base text-forest-800/80 dark:text-gray-300 sm:text-lg">
             Full Stack Developer crafting modern web experiences with cutting-edge technologies
           </p>
         </motion.div>
 
         <motion.div
-          className="h-2 w-64 overflow-hidden rounded-full bg-forest-200/50"
+          className="h-2 w-64 overflow-hidden rounded-full bg-forest-200/50 dark:bg-white/10"
           initial={{ width: 0 }}
           animate={{ width: '16rem' }}
           transition={{ duration: 0.4, delay: 0.3 }}

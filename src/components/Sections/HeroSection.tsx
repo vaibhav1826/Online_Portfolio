@@ -37,7 +37,7 @@ const HeroSection = ({ id }: HeroSectionProps) => {
 
   return (
     <section id={id} className="relative py-12 sm:py-20 overflow-hidden w-full">
-      <div className="absolute inset-0 bg-gradient-to-br from-forest-100/40 via-forest-50/30 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-forest-100/40 dark:from-slate-900/40 via-forest-50/30 dark:via-slate-800/30 to-transparent pointer-events-none transition-colors duration-500" />
 
       <div className="relative container mx-auto px-4 max-w-6xl">
         <div className="flex flex-col items-center gap-10 lg:grid lg:grid-cols-2 lg:items-center">
@@ -63,11 +63,11 @@ const HeroSection = ({ id }: HeroSectionProps) => {
               transition={{ type: "spring", stiffness: 300 }}
             >
               {/* Static gradient ring */}
-              <div className="absolute inset-[-6px] rounded-[2.5rem] border-2 border-forest-400/20" />
+              <div className="absolute inset-[-6px] rounded-[2.5rem] border-2 border-forest-400/20 dark:border-forest-500/10 transition-colors" />
 
               {/* Image container */}
               <motion.div
-                className="absolute inset-0 rounded-3xl overflow-hidden bg-slate-900 border-4 border-slate-800 shadow-2xl"
+                className="absolute inset-0 rounded-3xl overflow-hidden bg-forest-100 dark:bg-slate-900 border-4 border-forest-200 dark:border-slate-800 shadow-2xl transition-colors"
                 whileHover={{
                   borderColor: "rgb(34, 197, 94)",
                   boxShadow: "0 0 30px rgba(34, 197, 94, 0.4)",
@@ -84,7 +84,7 @@ const HeroSection = ({ id }: HeroSectionProps) => {
 
               {/* Professional Floating badge */}
               <motion.div
-                className="absolute -bottom-2 -right-2 sm:-bottom-6 sm:-right-6 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl px-3 py-1.5 sm:px-6 sm:py-4 shadow-xl border border-forest-100 z-10"
+                className="absolute -bottom-2 -right-2 sm:-bottom-6 sm:-right-6 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-xl sm:rounded-2xl px-3 py-1.5 sm:px-6 sm:py-4 shadow-xl border border-forest-100 dark:border-slate-800 transition-colors z-10"
                 initial={{ scale: 0, y: 10 }}
                 animate={{
                   scale: 1,
@@ -97,9 +97,9 @@ const HeroSection = ({ id }: HeroSectionProps) => {
                   damping: 20
                 }}
               >
-                <div className="text-slate-900 text-center">
-                  <div className="text-sm sm:text-xl font-bold bg-gradient-to-r from-forest-600 to-emerald-600 bg-clip-text text-transparent">Available</div>
-                  <div className="text-[10px] sm:text-sm text-forest-800 font-medium whitespace-nowrap">For Opportunities</div>
+                <div className="text-slate-900 dark:text-white text-center transition-colors">
+                  <div className="text-sm sm:text-xl font-bold bg-gradient-to-r from-forest-600 to-emerald-600 dark:from-forest-400 dark:to-emerald-400 bg-clip-text text-transparent">Available</div>
+                  <div className="text-[10px] sm:text-sm text-forest-800 dark:text-gray-300 font-medium whitespace-nowrap">For Opportunities</div>
                 </div>
               </motion.div>
             </motion.div>
@@ -127,7 +127,7 @@ const HeroSection = ({ id }: HeroSectionProps) => {
               </motion.div>
 
               <motion.h1
-                className="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900 leading-[1.1]"
+                className="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900 dark:text-white leading-[1.1] transition-colors"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
@@ -149,22 +149,22 @@ const HeroSection = ({ id }: HeroSectionProps) => {
               </motion.h1>
 
               <motion.p
-                className="text-base sm:text-xl text-forest-800/90 leading-relaxed max-w-xl mx-auto lg:mx-0"
+                className="text-base sm:text-xl text-forest-800/90 dark:text-gray-300 leading-relaxed max-w-xl mx-auto lg:mx-0 transition-colors"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
               >
-                Crafting modern web experiences with cutting-edge technologies.
-                Passionate about building scalable applications that make a difference.
+                I am a results-oriented 3rd-year Computer Science and Engineering student at Lovely Professional University, 
+                with a core focus on high-performance software engineering and building user-centric web applications.
               </motion.p>
 
               <motion.div
-                className="flex items-center gap-2 text-forest-700 justify-center lg:justify-start text-sm sm:text-base font-medium"
+                className="flex items-center gap-2 text-forest-700 dark:text-emerald-400 justify-center lg:justify-start text-sm sm:text-base font-medium transition-colors"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.9 }}
               >
-                <FaMapMarkerAlt className="text-forest-600" />
+                <FaMapMarkerAlt className="text-forest-600 dark:text-forest-400 transition-colors" />
                 <span>Jalandhar, Punjab, India</span>
               </motion.div>
             </div>
@@ -187,7 +187,7 @@ const HeroSection = ({ id }: HeroSectionProps) => {
                   rel={link.href.startsWith('http') ? "noreferrer" : undefined}
                   className={`flex items-center gap-2 ${link.bg
                     ? 'bg-forest-600 hover:bg-forest-700 text-white shadow-md'
-                    : 'bg-white hover:bg-forest-50 text-slate-900 border border-forest-200'
+                    : 'bg-white dark:bg-slate-900 hover:bg-forest-50 dark:hover:bg-slate-800 text-slate-900 dark:text-white border border-forest-200 dark:border-slate-700'
                     } px-4 py-2.5 rounded-xl transition-all duration-300 text-xs sm:text-sm font-bold`}
                   whileHover={{ y: -2, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -201,7 +201,7 @@ const HeroSection = ({ id }: HeroSectionProps) => {
               <motion.a
                 href="/Lpu_Resume.pdf"
                 download="Vaibhav_Bhatt_Resume.pdf"
-                className="flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-xl transition-all duration-300 hover:bg-slate-800 shadow-md text-xs sm:text-sm font-bold border border-slate-700"
+                className="flex items-center gap-2 bg-forest-600 dark:bg-forest-500 text-white px-5 py-2.5 rounded-xl transition-all duration-300 hover:bg-forest-700 dark:hover:bg-forest-400 shadow-md text-xs sm:text-sm font-bold border border-forest-700 dark:border-forest-600"
                 whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0, y: 20 }}
