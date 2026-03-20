@@ -65,10 +65,10 @@ const DynamicResume = ({ id }: DynamicResumeProps) => {
       <AnimatedCard className="space-y-6 sm:space-y-8 px-4 sm:px-8 py-6 sm:py-10">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-forest-600 font-semibold">
+            <p className="text-sm uppercase tracking-[0.35em] text-forest-600 dark:text-forest-400 font-semibold transition-colors">
               overview
             </p>
-            <h3 className="font-display text-2xl text-slate-900">Professional Summary</h3>
+            <h3 className="font-display text-2xl text-slate-900 dark:text-white transition-colors">Professional Summary</h3>
           </div>
         </div>
 
@@ -84,7 +84,7 @@ const DynamicResume = ({ id }: DynamicResumeProps) => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-auto border border-gray-700 shadow-2xl"
+              className="relative bg-gradient-to-br from-white to-forest-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-auto border border-forest-100 dark:border-gray-700 shadow-2xl transition-colors"
             >
               <button
                 onClick={closeCertificateModal}
@@ -95,8 +95,8 @@ const DynamicResume = ({ id }: DynamicResumeProps) => {
 
               <div className="p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <FaCertificate className="text-4xl text-forest-600" />
-                  <h3 className="text-3xl font-bold text-white">{selectedCertificate}</h3>
+                  <FaCertificate className="text-4xl text-forest-600 dark:text-forest-400 transition-colors" />
+                  <h3 className="text-3xl font-bold text-slate-900 dark:text-white transition-colors">{selectedCertificate}</h3>
                 </div>
 
                 {/* 🟦 DYNAMIC CERTIFICATE IMAGE */}
@@ -108,7 +108,7 @@ const DynamicResume = ({ id }: DynamicResumeProps) => {
                   />
                 </div>
 
-                <p className="mt-6 text-gray-400 text-center italic">
+                <p className="mt-6 text-forest-600/80 dark:text-gray-400 text-center italic transition-colors">
                   Certificate preview - Click outside to close
                 </p>
               </div>
@@ -125,24 +125,24 @@ const DynamicResume = ({ id }: DynamicResumeProps) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="overflow-hidden rounded-3xl border border-forest-200 bg-white/60 backdrop-blur-sm shadow-sm"
+                className="overflow-hidden rounded-3xl border border-forest-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm shadow-sm transition-colors"
               >
                 <button
                   onClick={() => toggleSection(section.title)}
-                  className="flex w-full items-center justify-between px-4 sm:px-6 py-4 text-left hover:bg-forest-50 transition"
+                  className="flex w-full items-center justify-between px-4 sm:px-6 py-4 text-left hover:bg-forest-50 dark:hover:bg-slate-800 transition-colors"
                 >
                   <div>
-                    <p className="text-xs uppercase tracking-[0.3em] text-forest-600 font-semibold mb-1">
+                    <p className="text-xs uppercase tracking-[0.3em] text-forest-600 dark:text-forest-400 font-semibold mb-1 transition-colors">
                       {section.title}
                     </p>
-                    <p className="text-sm text-forest-800/80 font-medium">
+                    <p className="text-sm text-forest-800/80 dark:text-gray-300 font-medium transition-colors">
                       {section.items.length} item{section.items.length > 1 ? 's' : ''}
                     </p>
                   </div>
                   <motion.svg
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="h-6 w-6 text-forest-600"
+                    className="h-6 w-6 text-forest-600 dark:text-forest-400 transition-colors"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -160,27 +160,27 @@ const DynamicResume = ({ id }: DynamicResumeProps) => {
                     {section.items.map((item) => (
                       <div
                         key={item.title}
-                        className={`rounded-2xl bg-forest-50/50 p-5 border border-forest-100 ${section.title === 'Certificates' ? 'cursor-pointer hover:bg-forest-100 hover:border-forest-300 transition-all duration-300 shadow-sm' : ''
+                        className={`rounded-2xl bg-forest-50/50 dark:bg-slate-900 p-5 border border-forest-100 dark:border-slate-800 transition-colors ${section.title === 'Certificates' ? 'cursor-pointer hover:bg-forest-100 dark:hover:bg-slate-800 hover:border-forest-300 dark:hover:border-slate-600 shadow-sm' : ''
                           }`}
                         onClick={() => section.title === 'Certificates' && openCertificateModal(item.title)}
                       >
                         <div className="flex flex-wrap items-baseline justify-between gap-2">
                           <div className="flex items-center gap-2">
-                            <h4 className="font-display text-lg text-slate-900 font-bold">{item.title}</h4>
+                            <h4 className="font-display text-lg text-slate-900 dark:text-white font-bold transition-colors">{item.title}</h4>
                             {section.title === 'Certificates' && (
-                              <FaCertificate className="text-forest-600 animate-pulse" />
+                              <FaCertificate className="text-forest-600 dark:text-forest-400 animate-pulse transition-colors" />
                             )}
                           </div>
                           {item.period ? (
-                            <span className="text-xs uppercase tracking-[0.2em] text-forest-600 font-medium">
+                            <span className="text-xs uppercase tracking-[0.2em] text-forest-600 dark:text-forest-400 font-medium transition-colors">
                               {item.period}
                             </span>
                           ) : null}
                         </div>
-                        {item.subtitle ? <p className="mt-1 text-sm font-semibold text-forest-800">{item.subtitle}</p> : null}
-                        {item.description ? <p className="mt-3 text-sm text-forest-700 leading-relaxed">{item.description}</p> : null}
+                        {item.subtitle ? <p className="mt-1 text-sm font-semibold text-forest-800 dark:text-gray-300 transition-colors">{item.subtitle}</p> : null}
+                        {item.description ? <p className="mt-3 text-sm text-forest-700 dark:text-gray-400 leading-relaxed transition-colors">{item.description}</p> : null}
                         {section.title === 'Certificates' && (
-                          <p className="mt-2 text-xs text-forest-600 italic">Click to view certificate</p>
+                          <p className="mt-2 text-xs text-forest-600 dark:text-forest-400 italic transition-colors">Click to view certificate</p>
                         )}
                       </div>
                     ))}

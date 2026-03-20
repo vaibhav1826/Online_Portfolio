@@ -64,8 +64,8 @@ const ContactForm = ({ id }: ContactFormProps) => {
         {/* Contact Information First on Mobile */}
         <AnimatedCard delay={0.1} className="h-full flex flex-col space-y-6 sm:space-y-8 order-first lg:order-last">
           <div className="text-center lg:text-left">
-            <h3 className="font-display text-2xl sm:text-3xl text-slate-900 font-bold mb-2">Contact Information</h3>
-            <p className="text-forest-800/70 text-sm sm:text-base">Reach out via any of these channels</p>
+            <h3 className="font-display text-2xl sm:text-3xl text-slate-900 dark:text-white font-bold mb-2 transition-colors">Contact Information</h3>
+            <p className="text-forest-800/70 dark:text-gray-400 text-sm sm:text-base transition-colors">Reach out via any of these channels</p>
           </div>
 
           <div className="space-y-4">
@@ -102,19 +102,19 @@ const ContactForm = ({ id }: ContactFormProps) => {
             ].map((item) => (
               <div
                 key={item.label}
-                className="flex items-center gap-3 sm:gap-4 rounded-2xl bg-forest-50/50 border border-forest-100 p-3 sm:p-5 shadow-sm transition-all hover:border-forest-200 min-w-0"
+                className="flex items-center gap-3 sm:gap-4 rounded-2xl bg-forest-50/50 dark:bg-slate-900/50 border border-forest-100 dark:border-slate-800 p-3 sm:p-5 shadow-sm transition-all hover:border-forest-200 dark:hover:border-slate-700 min-w-0"
               >
-                <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-forest-100 text-forest-700">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl bg-forest-100 dark:bg-slate-800 text-forest-700 dark:text-forest-400 transition-colors">
                   {item.icon}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-[10px] sm:text-xs text-forest-600 font-bold uppercase tracking-wider mb-0.5">{item.label}</p>
+                  <p className="text-[10px] sm:text-xs text-forest-600 dark:text-forest-400 font-bold uppercase tracking-wider mb-0.5 transition-colors">{item.label}</p>
                   {item.href ? (
-                    <a href={item.href} className="text-sm sm:text-base text-slate-900 font-bold hover:text-forest-600 transition block break-all whitespace-normal">
+                    <a href={item.href} className="text-sm sm:text-base text-slate-900 dark:text-white font-bold hover:text-forest-600 dark:hover:text-forest-400 transition block break-all whitespace-normal">
                       {item.value}
                     </a>
                   ) : (
-                    <p className="text-sm sm:text-base text-slate-900 font-bold break-words whitespace-normal">{item.value}</p>
+                    <p className="text-sm sm:text-base text-slate-900 dark:text-white font-bold break-words whitespace-normal transition-colors">{item.value}</p>
                   )}
                 </div>
               </div>
@@ -138,7 +138,7 @@ const ContactForm = ({ id }: ContactFormProps) => {
                   href={social.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-12 w-12 items-center justify-center rounded-xl bg-forest-50 border border-forest-100 text-forest-700 transition hover:bg-forest-600 hover:text-white shadow-sm"
+                  className="flex h-12 w-12 items-center justify-center rounded-xl bg-forest-50 dark:bg-slate-900 border border-forest-100 dark:border-slate-800 text-forest-700 dark:text-gray-300 transition-colors hover:bg-forest-600 dark:hover:bg-slate-800 hover:text-white dark:hover:text-white shadow-sm"
                   aria-label={social.label}
                 >
                   {social.icon}
@@ -151,56 +151,56 @@ const ContactForm = ({ id }: ContactFormProps) => {
         {/* Send a Message Card */}
         <AnimatedCard className="h-full flex flex-col space-y-6 sm:space-y-8">
           <div className="text-center lg:text-left">
-            <h3 className="font-display text-2xl sm:text-3xl text-slate-900 font-bold mb-2">Send a Message</h3>
-            <p className="text-forest-800/70 text-sm sm:text-base">I'll get back to you as soon as possible</p>
+            <h3 className="font-display text-2xl sm:text-3xl text-slate-900 dark:text-white font-bold mb-2 transition-colors">Send a Message</h3>
+            <p className="text-forest-800/70 dark:text-gray-400 text-sm sm:text-base transition-colors">I'll get back to you as soon as possible</p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col flex-1 space-y-6">
             <div className="grid gap-4 sm:grid-cols-2">
-              <label className="flex flex-col gap-2 text-sm text-forest-700 font-bold uppercase tracking-wider">
+              <label className="flex flex-col gap-2 text-sm text-forest-700 dark:text-forest-400 font-bold uppercase tracking-wider transition-colors">
                 Name
                 <input
                   required
                   type="text"
                   value={formData.name}
                   onChange={handleChange('name')}
-                  className="rounded-xl border border-forest-200 bg-white/80 px-4 py-3 text-slate-900 outline-none transition focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 shadow-sm sm:text-base"
+                  className="rounded-xl border border-forest-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 px-4 py-3 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 outline-none transition focus:border-forest-500 dark:focus:border-forest-400 focus:ring-2 focus:ring-forest-500/20 dark:focus:ring-forest-400/20 shadow-sm sm:text-base"
                   placeholder="Your name"
                 />
               </label>
-              <label className="flex flex-col gap-2 text-sm text-forest-700 font-bold uppercase tracking-wider">
+              <label className="flex flex-col gap-2 text-sm text-forest-700 dark:text-forest-400 font-bold uppercase tracking-wider transition-colors">
                 Email
                 <input
                   required
                   type="email"
                   value={formData.email}
                   onChange={handleChange('email')}
-                  className="rounded-xl border border-forest-200 bg-white/80 px-4 py-3 text-slate-900 outline-none transition focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 shadow-sm sm:text-base"
+                  className="rounded-xl border border-forest-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 px-4 py-3 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 outline-none transition focus:border-forest-500 dark:focus:border-forest-400 focus:ring-2 focus:ring-forest-500/20 dark:focus:ring-forest-400/20 shadow-sm sm:text-base"
                   placeholder="you@email.com"
                 />
               </label>
             </div>
 
-            <label className="flex flex-col gap-2 text-sm text-forest-700 font-bold uppercase tracking-wider">
+            <label className="flex flex-col gap-2 text-sm text-forest-700 dark:text-forest-400 font-bold uppercase tracking-wider transition-colors">
               Subject
               <input
                 required
                 type="text"
                 value={formData.subject}
                 onChange={handleChange('subject')}
-                className="rounded-xl border border-forest-200 bg-white/80 px-4 py-3 text-slate-900 outline-none transition focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 shadow-sm sm:text-base"
+                className="rounded-xl border border-forest-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 px-4 py-3 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 outline-none transition focus:border-forest-500 dark:focus:border-forest-400 focus:ring-2 focus:ring-forest-500/20 dark:focus:ring-forest-400/20 shadow-sm sm:text-base"
                 placeholder="What's this about?"
               />
             </label>
 
-            <label className="flex flex-col gap-2 text-sm text-forest-700 font-bold uppercase tracking-wider">
+            <label className="flex flex-col gap-2 text-sm text-forest-700 dark:text-forest-400 font-bold uppercase tracking-wider transition-colors">
               Message
               <textarea
                 required
                 rows={5}
                 value={formData.message}
                 onChange={handleChange('message')}
-                className="rounded-xl border border-forest-200 bg-white/80 px-4 py-3 text-slate-900 outline-none transition focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 shadow-sm sm:text-base resize-none"
+                className="rounded-xl border border-forest-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 px-4 py-3 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 outline-none transition focus:border-forest-500 dark:focus:border-forest-400 focus:ring-2 focus:ring-forest-500/20 dark:focus:ring-forest-400/20 shadow-sm sm:text-base resize-none"
                 placeholder="Tell me about your project or inquiry..."
               />
             </label>
