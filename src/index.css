@@ -4,16 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: dark;
-}
-
 html, body {
-  @apply bg-slate-950 text-white font-body antialiased;
+  @apply bg-white text-slate-900 dark:bg-slate-950 dark:text-white font-body antialiased;
   overflow-x: hidden;
   width: 100%;
   margin: 0;
   padding: 0;
+}
+
+html:not(.dark), html:not(.dark) body, html.light, html.light body {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 #root {
