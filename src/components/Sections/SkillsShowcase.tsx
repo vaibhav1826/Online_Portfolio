@@ -1,4 +1,11 @@
 import { motion } from 'framer-motion'
+import { 
+  FaReact, FaHtml5, FaCss3Alt, FaJs, FaNodeJs, FaPhp, FaPython, FaJava, FaGitAlt, FaDatabase, FaCode
+} from 'react-icons/fa'
+import { 
+  SiTypescript, SiTailwindcss, SiExpress, SiMongodb, SiMysql, 
+  SiCplusplus, SiC, SiPostman, SiChartdotjs, SiBootstrap
+} from 'react-icons/si'
 
 type SkillsShowcaseProps = {
   id: string
@@ -7,33 +14,62 @@ type SkillsShowcaseProps = {
 const skillsData = [
   {
     category: 'Frontend',
-    skills: ['React.js', 'TypeScript', 'Tailwind CSS', 'HTML5', 'CSS3', 'JavaScript'],
     level: 90,
     color: 'rgba(34, 197, 94, 0.8)', // green-500
+    skills: [
+      { name: 'React.js', icon: FaReact },
+      { name: 'TypeScript', icon: SiTypescript },
+      { name: 'Tailwind CSS', icon: SiTailwindcss },
+      { name: 'HTML5', icon: FaHtml5 },
+      { name: 'CSS3', icon: FaCss3Alt },
+      { name: 'JavaScript', icon: FaJs },
+    ]
   },
   {
     category: 'Backend',
-    skills: ['Node.js', 'Express.js', 'PHP', 'RESTful APIs'],
     level: 85,
     color: 'rgba(16, 185, 129, 0.8)', // emerald-500
+    skills: [
+      { name: 'Node.js', icon: FaNodeJs },
+      { name: 'Express.js', icon: SiExpress },
+      { name: 'PHP', icon: FaPhp },
+      { name: 'RESTful APIs', icon: FaDatabase },
+    ]
   },
   {
     category: 'Database',
-    skills: ['MongoDB', 'MySQL', 'Database Design'],
     level: 80,
     color: 'rgba(20, 184, 166, 0.8)', // teal-500
+    skills: [
+      { name: 'MongoDB', icon: SiMongodb },
+      { name: 'MySQL', icon: SiMysql },
+      { name: 'Database Design', icon: FaDatabase },
+    ]
   },
   {
     category: 'Languages',
-    skills: ['JavaScript', 'TypeScript', 'C++', 'Java', 'Python', 'C'],
     level: 88,
     color: 'rgba(74, 222, 128, 0.8)', // green-400
+    skills: [
+      { name: 'JavaScript', icon: FaJs },
+      { name: 'TypeScript', icon: SiTypescript },
+      { name: 'C++', icon: SiCplusplus },
+      { name: 'Java', icon: FaJava },
+      { name: 'Python', icon: FaPython },
+      { name: 'C', icon: SiC },
+    ]
   },
   {
     category: 'Tools & Platforms',
-    skills: ['Git', 'VS Code', 'Postman', 'Chart.js', 'Bootstrap'],
     level: 82,
     color: 'rgba(52, 211, 153, 0.8)', // emerald-400
+    skills: [
+      { name: 'Git', icon: FaGitAlt },
+      { name: 'VS Code', icon: FaCode },
+      { name: 'Postman', icon: SiPostman },
+      { name: 'Chart.js', icon: SiChartdotjs },
+      { name: 'Bootstrap', icon: SiBootstrap },
+    ]
   },
 ]
 
@@ -97,13 +133,14 @@ const SkillsShowcase = ({ id }: SkillsShowcaseProps) => {
               </div>
 
               {/* Skills List */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {category.skills.map((skill) => (
                   <span
-                    key={skill}
-                    className="px-3 py-1 bg-forest-50 dark:bg-slate-800 border border-forest-100 dark:border-slate-700 text-forest-800 dark:text-gray-300 rounded-full text-sm hover:bg-forest-100 dark:hover:bg-slate-700 transition-colors"
+                    key={skill.name}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 dark:bg-slate-800 border border-forest-100 dark:border-slate-700 text-forest-800 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-forest-100 dark:hover:bg-slate-700 transition-colors shadow-sm"
                   >
-                    {skill}
+                    <skill.icon className="text-forest-600 dark:text-emerald-400 text-[16px]" />
+                    {skill.name}
                   </span>
                 ))}
               </div>
