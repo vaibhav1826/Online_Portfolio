@@ -36,7 +36,7 @@ function App() {
 
   return (
     <Router>
-      <div className="relative min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-gray-100 flex flex-col overflow-x-hidden">
+      <div className="relative min-h-screen text-slate-900 dark:text-gray-100 flex flex-col overflow-x-hidden bg-transparent">
         <ToastContainer
           position="bottom-right"
           toastClassName="glass-panel !bg-white/90 dark:!bg-slate-900/90 !text-slate-900 dark:!text-white !border !border-forest-100 dark:!border-slate-800 !shadow-glow !rounded-2xl !px-5 !py-4 !text-sm !font-medium transition-colors"
@@ -50,7 +50,7 @@ function App() {
             <LightBackground />
 
             {/* Main Content Area */}
-            <div className="flex-grow">
+            <div className="flex-grow container relative z-10 mx-auto w-full">
               <Routes>
                 <Route path="/" element={<HomeView />} />
                 <Route path="/projects" element={<ProjectsPage />} />
@@ -59,7 +59,9 @@ function App() {
               </Routes>
             </div>
 
-            <Footer />
+            <div className="relative z-10">
+              <Footer />
+            </div>
             <AssistantWidget open={assistantOpen} onClose={() => setAssistantOpen(false)} />
             <ScrollToTop />
           </>
