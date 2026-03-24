@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { FaStar } from 'react-icons/fa'
+import { FaStar, FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
 import SectionTitle from '../UI/SectionTitle'
 import AnimatedCard from '../UI/AnimatedCard'
 import ImageCarousel from '../UI/ImageCarousel'
@@ -111,16 +111,16 @@ const ProjectsShowcase = ({ id, featuredOnly = false }: ProjectsShowcaseProps) =
                 </motion.div>
 
                 {/* CTA buttons */}
-                <div className={`flex gap-2 pt-2 ${featuredOnly ? 'mt-1' : ''}`}>
+                <div className={`flex gap-3 pt-3 ${featuredOnly ? 'mt-1' : 'mt-2'}`}>
                   {project.demo && (
                     <a
                       href={project.demo}
                       target="_blank"
                       rel="noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className={`flex-1 rounded-lg bg-forest-600 font-medium text-white text-center shadow-sm transition hover:bg-forest-500 ${featuredOnly ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'}`}
+                      className={`flex-1 flex items-center justify-center gap-2 rounded-xl bg-forest-600 font-bold text-white shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 hover:bg-forest-500 ${featuredOnly ? 'px-3 py-2 text-xs' : 'px-4 py-2.5 text-sm'}`}
                     >
-                      Live Demo
+                      <FaExternalLinkAlt className={featuredOnly ? 'text-[10px]' : 'text-xs'} /> Live Demo
                     </a>
                   )}
                   <a
@@ -128,9 +128,9 @@ const ProjectsShowcase = ({ id, featuredOnly = false }: ProjectsShowcaseProps) =
                     target="_blank"
                     rel="noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className={`flex-1 rounded-lg border border-forest-300 dark:border-slate-600 font-medium text-center text-forest-700 dark:text-gray-300 transition-colors hover:bg-forest-50 dark:hover:bg-slate-800 hover:border-forest-400 dark:hover:border-slate-500 ${featuredOnly ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'}`}
+                    className={`flex-1 flex items-center justify-center gap-2 rounded-xl border border-forest-300 dark:border-slate-600 font-bold text-forest-700 dark:text-gray-300 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md hover:bg-forest-50 dark:hover:bg-slate-700 hover:border-forest-400 dark:hover:border-slate-500 ${featuredOnly ? 'px-3 py-2 text-xs' : 'px-4 py-2.5 text-sm'}`}
                   >
-                    GitHub
+                    <FaGithub className={featuredOnly ? 'text-sm' : 'text-base'} /> GitHub
                   </a>
                 </div>
               </div>
